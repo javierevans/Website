@@ -1,0 +1,67 @@
+
+ <header> 
+        <nav>
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/weblogo (1).png" alt="Logo">
+                </a>
+            </div>
+
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                 <li><a href="#skills">Skills</a></li>
+                  <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+<style>   
+    /* ===== Header ===== */
+header {
+    position: sticky;                     /* Keeps header visible while scrolling */
+    top: 20px;                            /* Distance from top of viewport */
+    height: 80px;
+}
+
+/* ===== Navigation Bar ===== */
+nav {
+    display: flex;                        /* Enable flexbox layout */
+    justify-content: space-between;       /* Logo on left, links on right */
+    align-items: center;                  /* Vertically center items */
+    height: 100%;
+    padding: 0 20px;                      /* Horizontal spacing inside nav */
+}
+
+/* ===== Logo Image ===== */
+nav .logo img {
+    height: 200px;                        /* Controls logo size */
+    width: auto;                          /* Maintain aspect ratio */
+}
+
+/* ===== Navigation Links List ===== */
+nav ul {
+    display: flex;                        /* Horizontal list */
+    justify-content: space-between;       /* Even spacing between links */
+    align-items: center;
+    list-style: none;                     /* Remove bullet points */
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 60%;                           /* Controls spacing of nav links */
+}
+
+/* ===== Navigation Links ===== */
+nav a {
+    text-decoration: none;                /* Remove underline */
+    color: black;                         /* Default link color */
+    font-weight: 700;                     /* Bold text */
+    transition: color 0.3s, padding 0.3s; /* Smooth hover animation */
+}
+
+/* ===== Hover Effect ===== */
+nav a:hover {
+    color: orange;
+    padding: 5px 10px;                    /* Adds subtle interaction feedback */
+}
+</style>
