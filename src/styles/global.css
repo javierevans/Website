@@ -1,1 +1,564 @@
+
+/* ========== Import Tailwind ============== */
 @import "tailwindcss";
+
+
+/* ========== Global Page Behavior ========= */
+html {
+  scroll-behavior: smooth; /* Makes anchor links scroll smoothly */
+}
+
+/* Removes default browser spacing around the page */
+body {
+  margin: 0;
+   background-color: var(--bg);
+  color: var(--text);
+}
+
+:root {
+  --bg: #FFF7F5;
+  --surface: #FFFFFF;
+  --text: #1F2937;
+  --muted: #4B5563;
+  --border: #F3D9D2;
+
+  --accent: #FB7185;
+  --accent-hover: #E11D48;
+  --accent-soft: #FFE4E6;
+}
+
+
+/* ========== Header / Navigation ========== */
+header {
+  background: rgba(255, 255, 255, 0.8); /* Slight transparency */
+  backdrop-filter: blur(10px);          /* Frosted blur */
+  -webkit-backdrop-filter: blur(10px);  /* Safari support */
+
+   border-bottom: 1px solid var(--border);
+ 
+  
+  padding: 8px 16px;              /* Chip size */
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);    /* Subtle shadow for depth */
+  
+  position: sticky;
+  top: 0;
+  height: 50px;          /* Controls total navbar height */
+  z-index: 1000;         /* Keeps it layered above sections */
+  
+}
+
+/* ===== Navigation Bar ===== */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+   padding: 12px 6%;
+
+  height: 100%;
+}
+
+/* ===== Logo Image ===== */
+nav .logo img {
+  max-height: clamp(45px, 4vw, 70px);
+  width: auto;      /* Keeps proportions correct */
+  display: block;
+}
+
+/* ===== Navigation Links List ===== */
+nav ul {
+  display: flex;
+  justify-content: space-between; /* Even spacing between links */
+  align-items: center;
+  list-style: none;      /* Removes default bullets */
+  margin: 0;
+  padding: 0;
+ height: 100%;
+  width: 60%;     /* Controls spacing of nav links */
+  gap: 40px;
+}
+
+
+/* ===== Navigation Links ===== */
+nav a {
+  text-decoration: none;      /* Remove underline */
+    color: black;           /* Default link color */
+    font-size: clamp(1rem, 0.9vw, 1.15rem);
+    font-weight: 700;          /* Bold text */
+    transition: color 0.3s ease, padding 0.3s ease ;   /* Smooth hover animation */
+}
+
+/* ===== Hover Effect ===== */
+nav a:hover {
+  color: orange;
+  padding: 5px 10px;
+}
+
+
+/* ========== Section Defaults ============= */
+/*
+Every section:
+- Takes at least full screen height
+- Has padding at top so content isn't hidden behind sticky header
+- scroll-margin-top fixes anchor jumping under sticky header
+*/
+section {
+  min-height: 100vh;        /* Makes each section full screen height */
+  padding-top: 80px;        /* Space under navbar */
+  scroll-margin-top: 90px;  /* Prevents navbar from covering section title */
+  background-color: rgb(241, 191, 241);
+}
+
+
+/* ========== Welcome/Home Section (Hero) ======= */
+#Welcome {
+   min-height: calc(100vh - 90px); /* subtract nav height-ish */
+  color: black;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;   /* Vertical centering */
+  text-align: left;
+   padding: clamp(40px, 6vw, 90px) 6%;
+}
+
+/*Every direct child inside #Welcome can grow up to 1100px wide — but no wider */
+#Welcome > * {
+  max-width: 1100px;
+}
+
+/* Large hero title */
+#Welcome h1 {
+  font-size: clamp(2.6rem, 3.8vw, 4rem);
+  margin-bottom: 10px;          /* Removes default spacing */
+}
+
+/* Subtitle / intro paragraph */
+#Welcome p {
+    font-size: clamp(1.08rem, 1.3vw, 1.3rem);
+  line-height: 1.6;
+  max-width: 60ch;
+}
+
+@media (max-width: 768px) {
+  #Welcome {
+    align-items: center;
+    text-align: center;
+  }
+}
+/* ========== About Me Section ============ */
+#about {
+  min-height: 100vh;              /* Makes the About section at least full screen height */
+  display: flex;                  /* Lets you align/position the inner wrapper more easily */
+  align-items: flex-start;        /* Keeps content starting near the top (not vertically centered) */
+  width: 100%;                    /* Full width section */
+
+   /* Responsive padding: grows slightly on bigger screens */
+  padding: clamp(20px, 3vw, 60px) 6% clamp(80px, 8vw, 120px) 6%;
+}
+
+/* Main wrapper: holds the LEFT text column + RIGHT skills card */
+#about .about-wrap {
+  display: flex;                  /* Side-by-side layout */
+  align-items: center;            /* Vertically centers the two columns relative to each other */
+  justify-content: space-between; /* Pushes text left and skills right */
+
+  /* Responsive gap so columns breathe on bigger screens */
+  gap: clamp(30px, 5vw, 90px);
+
+  gap: 50px;                      /* Space between the two columns */
+  max-width: 1200px;              /* Prevents the content from getting too wide */
+  width: 100%;
+  margin: 0 auto;                /* Centers the wrapper horizontally */
+}
+
+/* LEFT column: about text */
+#about .about-text {
+  flex: 0 0 55%;                  /* Takes up ~55% of the wrapper width */
+  max-width: 650px;               /* Keeps paragraphs readable (prevents super long lines) */
+}
+
+/* RIGHT column: skills/card area */
+#about .about-side {
+  flex: 0 0 40%;                  /* Takes up ~40% of the wrapper width */
+}
+
+/* Goals list (custom bullets) */
+#about .goals {
+  list-style: none;               /* Removes default list bullets */
+  padding-left: 0;                /* Removes default left padding */
+  margin-top: 20px;               /* Space above the goals list */
+}
+
+/* Each goal item */
+#about .goals li {
+  position: relative;             /* Allows ::before to be positioned relative to this li */
+  padding-left: 28px;             /* Creates space on the left for the star bullet */
+  margin-bottom: 14px;            /* Space between goal items */
+  font-weight: 500;               /* Slightly bolder for emphasis */
+}
+
+/* Custom star "bullet" for each goal */
+#about .goals li::before {
+  content: "★";                   /* The star symbol itself */
+  position: absolute;             /* FIX: must be absolute so it sits in the left padding space */
+  left: 0;                        /* Places the star at the left edge of the li */
+  top: 0;                         /* Aligns star to the top of the text line */
+  color: gold;                    /* Star color */
+  font-size: 1.2rem;              /* Star size */
+  line-height: 1;                 /* Helps prevent weird vertical spacing */
+}
+
+/* Paragraph styling for readable text blocks */
+#about p {
+  line-height: 1.7;               /* More breathing room between lines */
+
+ /* Responsive font size for normal monitors + big screens */
+  font-size: clamp(1.05rem, 1vw, 1.18rem);
+
+  margin-bottom: 16px;            /* Space between paragraphs */
+  max-width: 62ch;                /* Readable line length (ch = approx character width) */
+}
+
+/* Main heading */
+#about h2 {
+  /* Responsive heading size */
+  font-size: clamp(2rem, 2.2vw, 2.8rem);
+  margin-bottom: 10px;            /* Space below heading */
+}
+
+/* Optional subtitle under the heading */
+#about .subtitle {
+  font-size: clamp(1.1rem, 1.2vw, 1.3rem);              /* Slightly larger than body text */
+  opacity: 0.85;                  /* Softens the subtitle */
+  margin-bottom: 22px;            /* Space below subtitle */
+}
+
+/* Skills/card styling (glass-like panel) */
+#about .about-side {
+  background: rgba(255,255,255,0.35);      /* Semi-transparent background */
+  border: 1px solid rgba(0,0,0,0.08);      /* Light border for definition */
+  border-radius: 18px;                      /* Rounded corners */
+
+  /* Slightly responsive padding so it doesn't feel tight on big screens */
+  padding: clamp(18px, 2vw, 28px);
+
+  backdrop-filter: blur(6px);               /* Blurs background behind card (modern browsers) */
+}
+
+#about  h3 {
+  font-size: clamp(2rem, 2.2vw, 2.8rem);
+  font-weight: 400;               /* Semi-bold for the "Skills" title */
+  margin-bottom: 16px;            /* Space below the heading */
+  text-align: center;            /* Center the "Skills" title */
+}
+
+/* Container that holds the skill "chips" */
+.skills {
+  display: flex;                  /* Makes chips line up in rows */
+  flex-wrap: wrap;                /* Allows chips to move to next line */
+  justify-content: center;        /* Centers chips horizontally inside the card */
+  gap: clamp(15px, 2vw, 20px);                      /* Space between chips */
+}
+
+/* Individual skill chip */
+.skills span {
+  padding: 8px 16px;              /* Chip size */
+  border-radius: 999px;           /* Fully rounded pill shape */
+  font-weight: 500;               /* Medium bold text */
+  background-color: #f3f4f6;      /* Light gray background */
+}
+
+/* Optional: stack earlier if it ever feels cramped */
+@media (max-width: 900px) {
+  #about .about-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #about .about-text,
+  #about .about-side {
+    flex: 1;
+    max-width: 100%;
+  }
+
+  #about .about-side {
+    width: 100%;
+  }
+}
+
+/* ========== Projects Section =========== */
+#projects {
+  min-height: 100vh;              /* Makes section at least full screen height */
+  display: flex;                  /* Allows us to align content inside */
+  align-items: center;            /* Vertical centering */
+  justify-content: center;        /* Horizontal centering */
+  width: 100%;                    /* Full width section */
+  padding: 20px 6% 100px 6%;      /* top | left/right | bottom */
+  background-color: var(--surface);
+border: 1px solid var(--border);
+}
+
+/* Wrapper (keeps title + grid together) */
+#projects .projects-wrap {
+  width: 100%;
+  max-width: 1100px;               /* Prevents content from getting too wide */
+}
+
+/* Section title */
+#projects h2 {
+  color: var(--text);
+  position: relative;
+  font-size: clamp(2.4rem, 3vw, 2.8rem);              /* Larger section title */
+  margin-bottom: 30px;            /* Space below heading */
+  text-align: center;            /* Center the section title */
+}
+
+#projects h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--accent);
+  margin: 12px auto 0;
+  border-radius: 2px;
+}
+
+/* Responsive grid of project cards */
+#projects .project-grid {
+  display: grid;                  /* Use CSS Grid for layout */
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Responsive columns */
+  gap: 30px;                      /* Space between project cards */
+  width: 100%;                    /* Full width of the section */
+}
+
+/* Project card base */
+#projects .project-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2vw, 20px);
+
+  position: relative;     
+  overflow: hidden; 
+  
+  text-decoration: none;  /* Remove underline */
+  color: inherit;         /* Keep normal text color */
+
+  transition: transform 200ms ease, box-shadow 200ms ease;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);    
+  
+  cursor: pointer;
+}
+
+/* Hover Lift Effect */
+#projects .project-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+   border-color: var(--accent);
+   border: 1px solid var(--accent);
+}
+
+/* Dark overlay (hidden until hover) */
+#projects .project-card::before {
+  content: "";
+  position: absolute; 
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba(0, 0, 0, .5);
+
+  opacity: 0;    /* Start hidden */
+  transition: 200ms ease;  /* Smooth fade */
+  border: 2px solid black; /* Outer border */
+  border-radius: 16px;     /* Slightly larger radius for the outer border */
+}
+
+#projects .project-card:hover::before {
+  opacity: 1;
+}
+
+/* Card title (normal state) */
+#projects .project-card h3 {
+  position: absolute;
+  font-size: clamp(1.5rem, 2vw, 1.8rem);
+ top: 50%; 
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+#projects .project-card:hover::before,
+#projects .project-card:hover h3 {
+  opacity: 1;
+}
+
+ #projects .project-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(10px, 1.5vw, 15px);
+   margin-top: auto; /* Pushes tags to bottom of card */
+}
+
+/* Individual skill chip */
+#projects .project-tags span {
+  padding: 6px 12px;              /* Chip size */
+  border-radius: 999px;           /* Fully rounded pill shape */
+  font-weight: 500;               /* Medium bold text */
+
+  background-color: var(--accent-soft);
+  color: var(--accent-hover);
+
+}
+
+
+
+/* ========== Contact Section (Split Layout) =========== */
+#contact {
+  min-height: 100vh;              /* Makes section at least full screen height */
+  display: flex;                  /* Allows us to align content inside */
+  align-items: flex-start;        /* Start content at top (not vertically centered) */
+  width: 100%;                    /* Full width section */
+  padding: 20px 6% 100px 6%;      /* top | left/right | bottom */
+}
+
+/* Wrapper that holds LEFT text + RIGHT form */
+#contact .contact-wrap {
+  display: flex;                  /* Put text and form side-by-side */
+  justify-content: space-between; /* Push left block left, form block right */
+  align-items: flex-start;        /* Align both blocks to the top */
+  gap: clamp(40px, 6vw, 140px);                     /* Space between the two columns (adjust as needed) */
+  width: 100%;                    /* Make sure wrapper spans full section width */
+}
+
+/* LEFT column */
+#contact .contact-text {
+  flex: 0 0 38%;                  /* Fixed ~40% width for the text column */
+}
+
+/* Headings + paragraph styling */
+#contact h2 {
+  font-size: clamp(2.5rem, 3.5vw, 3.2rem);
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+#contact h4 {
+  font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+#contact p {
+  font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+/* Email line */
+#contact .contact-email {
+ font-size: clamp(1.2rem, 1.5vw, 1.5rem);
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+#contact .contact-email a {
+  text-decoration: underline;     /* Make it obvious it's a link */
+  transition: color 0.2s ease, background-color 0.2s ease, padding 0.2s ease;
+}
+
+#contact .contact-email a:hover {
+  color: white;
+  background-color: black;        /* Adds a highlight effect */
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+
+#contact .contact-visual {
+  flex: 0 0 60%;                  /* Fixed ~60% width for the visual column */
+  width: 100%;
+  box-sizing: border-box;
+   background: rgba(255,255,255,0.35);      /* Semi-transparent background */
+  border: 1px solid rgba(0,0,0,0.08);      /* Light border for definition */
+  border-radius: 18px;                      /* Rounded corners */
+
+  /* Slightly responsive padding so it doesn't feel tight on big screens */
+  padding: clamp(18px, 2vw, 28px);
+
+  backdrop-filter: blur(6px);               /* Blurs background behind card (modern browsers) */
+}
+
+#contact .contact-visual form {
+  width: 100%;
+  display: flex;                  /* Stack inputs vertically */
+  flex-direction: column;
+  gap: clamp(15px, 2vw, 20px);                      /* Spacing between label/input groups */
+}
+
+/* Inputs + textarea */
+#contact input,
+#contact textarea {
+  padding: clamp(10px, 1.5vw, 16px);
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  font-family: inherit;
+  width: 100%;                    /* Fill the form column */
+  background-color: rgb(250, 250, 250);
+
+  /* Smooth hover change (put transition on the base rule) */
+  transition: background-color 0.2s ease;
+}
+
+#contact input:hover,
+#contact textarea:hover {
+  background-color: rgb(211, 234, 255);
+}
+
+/* Submit button */
+#contact button {
+  margin-top: 8px;                /* Space above button */
+  font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  width: fit-content;             /* Prevent full-width button */
+
+  /* Smooth hover animation */
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+#contact button:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+}
+
+/* ========== Mobile: stack layout ========== */
+@media (max-width: 768px) {
+  #contact .contact-wrap {
+    flex-direction: column;       /* Stack text above form */
+    gap: clamp(20px, 3vw, 30px);
+  }
+
+  #contact .contact-text,
+  #contact form {
+    flex: 1;                      /* Let both take full width */
+  }
+}

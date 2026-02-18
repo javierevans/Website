@@ -1,30 +1,28 @@
 ---
-import Welcome from '../components/Welcome.astro';
-
-import Layout from '../layouts/Layout.astro';
-import Contact from '../components/Contact.astro';
-import Projects from '../components/Projects.astro';
-
-
+import Layout from "../layouts/Layout.astro";
+import Welcome from "../components/Welcome.astro";
+import About from "../components/about.astro";
+import Projects from "../components/Projects.astro";
+import Contact from "../components/Contact.astro";
 ---
 
 <Layout title="Home">
-	<main>
-		
-			<Welcome />
-			
-			
-	<section id="home">
+  <main>
+    <section id="welcome" class="min-h-screen">
+      <Welcome />
+    </section>
 
+	<section id="about" class="min-h-screen">
+  	<About />
 	</section>
 
-	<section  id="projects">
-		<Projects />
-	</section>
 
-	<section  id="contact">
-			<Contact />
-	</section>
+    <section id="projects" class="min-h-screen">
+      <Projects />
+    </section>
 
-	</Layout>
+    <section id="contact" class="min-h-screen">
+      <Contact />
+    </section>
+  </main>
 </Layout>
