@@ -20,7 +20,7 @@
   </p>
     </div>
     <div class="contact-visual">
-    <form action="https://formspree.io/f/mayvlgvd" method="POST">
+    <form id="contact-form"action="https://formspree.io/f/mkovzyea" method="POST">
       <input type="hidden" name="_subject" value="New message from portfolio site">
 
         
@@ -33,8 +33,14 @@
         <label for="message">Message:</label>
         <textarea id="message" name="message" rows="5" required></textarea>
     
-        <button type="submit">Send</button>
+        <button id="send-btn" type="submit">Send</button>
+
+        <!-- Status message goes here -->
+        <p id="form-status" role="status" aria-live="polite"></p>
+
         </form>
      </div>
     </div>
 </section>
+<script type="module" src="/src/scripts/contact.js"></script>
+
