@@ -35,13 +35,13 @@ p {
 }
 
 :root {
-  --bg: #fff7f5;
+  --bg: #c5c8cf; /* Wolf grey */
   --surface: #ffffff;
-  --text: #1f2937;
+  --text: #1c1e21; /* Slightly deeper than before */
   --muted: #4b5563;
-  --border: #f3d9d2;
+  --border: #c7cbd1;
 
-  --accent: #fb7185;
+  --accent: #f43f5e; /* Modern pink */
   --accent-hover: #e11d48;
   --accent-soft: #ffe4e6;
 }
@@ -143,12 +143,14 @@ nav a {
   transition:
     color 0.3s ease,
     padding 0.3s ease; /* Smooth hover animation */
+  position: relative;
 }
 
 /* ===== Hover Effect ===== */
 nav a:hover {
   color: var(--accent-hover);
   padding: 5px 10px;
+  width: 100%;
 }
 
 /* ===== GitHub Button (optional) ===== */
@@ -197,44 +199,195 @@ section {
   min-height: 100vh; /* Makes each section full screen height */
   padding-top: 80px; /* Space under navbar */
   scroll-margin-top: 90px; /* Prevents navbar from covering section title */
-  background-color: rgb(241, 191, 241);
+  background-color: var(--bg);
+}
+
+/* Section titles with an accent line underneath */
+section h2 {
+  position: relative;
+  display: inline-block;
+}
+
+/* Accent line under section titles */
+section h2::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--accent);
+  margin-top: 6px;
+  border-radius: 2px;
 }
 
 /* ========== Welcome/Home Section (Hero) ======= */
-#Welcome {
+#welcome {
   min-height: calc(100vh - 90px); /* subtract nav height-ish */
   color: black;
+
   display: flex;
+  flex-direction: column; /* ✅ side-by-side */
+  align-items: center;
+  justify-content: space-between;
+
   width: 100%;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center; /* Vertical centering */
   text-align: left;
   padding: clamp(40px, 6vw, 90px) 6%;
+  gap: clamp(20px, 4vw, 60px); /* ✅ space between text & photo */
 }
 
-/*Every direct child inside #Welcome can grow up to 1100px wide — but no wider */
-#Welcome > * {
+/* Every direct child inside #welcome can grow up to 1100px wide — but no wider */
+#welcome > * {
   max-width: 1100px;
 }
 
 /* Large hero title */
-#Welcome h1 {
+#welcome h1 {
   font-size: clamp(2.6rem, 3.8vw, 4rem);
-  margin-bottom: 10px; /* Removes default spacing */
+  margin-bottom: 6px;
+}
+
+/* Accent line under hero title */
+#welcome h1::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 4px;
+  background: var(--accent);
+  margin-top: 6px;
+  border-radius: 2px;
 }
 
 /* Subtitle / intro paragraph */
-#Welcome p {
+#welcome p {
   font-size: clamp(1.08rem, 1.3vw, 1.3rem);
   line-height: 1.6;
   max-width: 60ch;
 }
 
-@media (max-width: 768px) {
-  #Welcome {
-    align-items: center;
+.btn-primary {
+  background-color: var(--accent);
+  color: white;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+#welcome .btn-outline {
+  background: transparent;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+#welcome .btn-outline:hover {
+  background-color: var(--accent-soft);
+  transform: translateY(-2px);
+}
+
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+  padding: 60px 10%;
+  min-height: 80vh;
+}
+
+/* Two column layout */
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  width: 100%;
+}
+
+/* LEFT SIDE */
+.hero-text {
+  flex: 1.5;
+  max-width: 780px;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+/* Buttons */
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 28px;
+}
+
+/* RIGHT SIDE */
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hero-image img {
+  width: 320px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Placeholder card */
+.photo-placeholder {
+  width: 340px;
+  height: 420px;
+  background: linear-gradient(135deg, var(--accent-soft), #d1d5db);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-weight: 600;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+@media (max-width: 900px) {
+  .hero-container {
+    flex-direction: column;
     text-align: center;
+  }
+
+  .hero-image {
+    justify-content: center;
+    margin-top: 40px;
+  }
+
+  .hero-buttons {
+    justify-content: center;
   }
 }
 /* ========== About Me Section ============ */
@@ -346,6 +499,48 @@ section {
   text-align: center; /* Center the "Skills" title */
 }
 
+/* ===== Resume Buttons ===== */
+.resume-buttons {
+  margin-top: 28px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Primary Button (pink filled) */
+.btn-primary {
+  background-color: var(--accent);
+  color: white;
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent-hover);
+  transform: translateY(-2px);
+}
+
+/* Outline Button */
+.btn-resume {
+  border: 2px solid var(--accent);
+  color: var(--accent);
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-resume:hover {
+  background-color: var(--accent-soft);
+  transform: translateY(-2px);
+}
+
 /* Container that holds the skill "chips" */
 .skills {
   display: flex; /* Makes chips line up in rows */
@@ -388,7 +583,7 @@ section {
   justify-content: center; /* Horizontal centering */
   width: 100%; /* Full width section */
   padding: 20px 6% 100px 6%; /* top | left/right | bottom */
-  background-color: var(--surface);
+  background-color: var(--bg);
   border: 1px solid var(--border);
 }
 
