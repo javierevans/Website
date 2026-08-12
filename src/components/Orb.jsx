@@ -157,6 +157,13 @@ export default function Orb({
 
       vec3 finalCol = mix(darkCol, lightCol, bgLuminance);
 
+      // Force true zero alpha well past the ring instead of an asymptotic
+      // falloff that never quite reaches it — otherwise the whole canvas
+      // rectangle carries a faint tint with a hard edge at its own bounds,
+      // visible as a "window" no matter how the container is sized.
+      float edgeMask = 1.0 - smoothstep(1.05, 1.55, len);
+      finalCol *= edgeMask;
+
       return extractAlpha(finalCol);
     }
 
