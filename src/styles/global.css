@@ -11,22 +11,29 @@ body {
   margin: 0;
   background-color: var(--bg);
   color: var(--text);
-  font-family: "Inter", sans-serif;
+  font-family: var(--font-body);
   letter-spacing: -0.01em;
 }
 
 h1 {
+  font-family: var(--font-mono);
   font-weight: 700;
   font-size: 3rem;
 }
 
 h2 {
+  font-family: var(--font-mono);
   font-weight: 600;
   font-size: 2rem;
 }
 h3 {
+  font-family: var(--font-mono);
   font-weight: 500;
   font-size: 1.5rem;
+}
+h4 {
+  font-family: var(--font-mono);
+  font-weight: 600;
 }
 
 p {
@@ -35,31 +42,34 @@ p {
 }
 
 :root {
-  --bg: #c5c8cf; /* Wolf grey */
-  --surface: #ffffff;
-  --text: #1c1e21; /* Slightly deeper than before */
-  --muted: #4b5563;
-  --border: #c7cbd1;
+  --bg: #0a0f1a; /* Near-black navy */
+  --surface: #10182a; /* Panel / card surface */
+  --text: #e7ecf5; /* Soft off-white */
+  --muted: #8b96b3; /* Blue-grey muted text */
+  --border: #232f49; /* Hairline border */
 
-  --accent: #f43f5e; /* Modern pink */
-  --accent-hover: #e11d48;
-  --accent-soft: #ffe4e6;
+  --accent: #fb5a78; /* Rose accent (from the original brand pink) */
+  --accent-hover: #ff7d96;
+  --accent-soft: rgba(251, 90, 120, 0.14);
+
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Menlo,
+    Consolas, monospace;
+  --font-body: "Inter", sans-serif;
 }
 
 /* ========== Header / Navigation ========== */
+/* Full-width bar, flush with the top edge, solid so nothing shows through behind it */
 header {
-  background: rgba(255, 255, 255, 0.8); /* Slight transparency */
-  backdrop-filter: blur(10px); /* Frosted blur */
-  -webkit-backdrop-filter: blur(10px); /* Safari support */
-
+  background: var(--surface); /* Solid — opaque on purpose, nothing bleeds through */
   border-bottom: 1px solid var(--border);
+  border-radius: 0 0 24px 24px; /* Curved bottom corners only; top stays flush */
+  box-shadow: 0 14px 34px -18px rgba(0, 0, 0, 0.6);
 
-  padding: 8px 16px; /* Chip size */
-  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  width: 100%;
 
   position: sticky;
   top: 0;
-  height: 50px; /* Controls total navbar height */
+  height: 64px; /* Controls total navbar height */
   z-index: 1000; /* Keeps it layered above sections */
 }
 
@@ -71,6 +81,9 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
 }
 
 /* GitHub link styling */
@@ -84,6 +97,7 @@ header {
 
   border-radius: 50%;
   border: 1px solid var(--border);
+  color: var(--text);
 
   transition:
     transform 0.2s ease,
@@ -94,6 +108,7 @@ header {
 .footer-github:hover {
   transform: translateY(-3px);
   background-color: var(--accent-soft);
+  color: var(--accent);
   opacity: 1;
 }
 
@@ -103,54 +118,146 @@ header {
 }
 
 /* ===== Navigation Bar ===== */
+/* logo | centered section links | right-side actions */
+/* The bar itself is full-width; the content inside stays centered and capped */
 nav {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
+  gap: 16px;
 
-  padding: 18px 6%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 28px;
 
   height: 100%;
 }
 
-/* ===== Logo Image ===== */
-nav .logo img {
-  height: auto; /* try 60–70 */
-  width: auto;
-  display: block;
-  padding: 0;
+.nav-center {
+  justify-self: center;
+}
+
+.nav-actions {
+  justify-self: end;
+}
+
+/* ===== Logo (text mark) ===== */
+nav .logo a {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text);
+}
+
+nav .logo .logo-mark {
+  color: var(--accent);
 }
 
 /* ===== Navigation Links List ===== */
 nav ul {
   display: flex;
-  justify-content: space-between; /* Even spacing between links */
   align-items: center;
   list-style: none; /* Removes default bullets */
   margin: 0;
   padding: 0;
   height: 100%;
-  width: auto; /* Controls spacing of nav links */
-  gap: 40px;
+  width: auto;
+  gap: 10px;
 }
 
-/* ===== Navigation Links ===== */
-nav a {
-  text-decoration: none; /* Remove underline */
-  color: black; /* Default link color */
-  font-size: clamp(1rem, 0.9vw, 1.15rem);
-  font-weight: 700; /* Bold text */
-  transition:
-    color 0.3s ease,
-    padding 0.3s ease; /* Smooth hover animation */
+/* ===== Navigation icon buttons ===== */
+.nav-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  color: var(--text);
+  text-decoration: none;
   position: relative;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
 }
 
-/* ===== Hover Effect ===== */
-nav a:hover {
+.nav-icon-btn:hover,
+.nav-icon-btn:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+  background-color: var(--accent-soft);
+}
+
+/* Filled state for whichever section is currently in view (see navspy.js) */
+.nav-icon-btn.active {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg);
+}
+
+.nav-icon-btn.active:hover,
+.nav-icon-btn.active:focus-visible {
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: var(--bg);
+}
+
+/* Resume stays accent-bordered at rest to read as the primary CTA */
+.nav-icon-btn.resume-btn {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.nav-icon-btn.resume-btn:hover,
+.nav-icon-btn.resume-btn:focus-visible {
+  background-color: var(--accent-soft);
   color: var(--accent-hover);
-  padding: 5px 10px;
+}
+
+.nav-icon {
+  display: flex;
+  width: 17px;
+  height: 17px;
+}
+
+.nav-icon svg {
   width: 100%;
+  height: 100%;
+}
+
+/* ===== Hover/focus tooltip (replaces the visible text label) ===== */
+.nav-tooltip {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translate(-50%, 4px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  padding: 4px 9px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+  z-index: 1100;
+}
+
+.nav-icon-btn:hover .nav-tooltip,
+.nav-icon-btn:focus-visible .nav-tooltip {
+  opacity: 1;
+  transform: translate(-50%, 0);
 }
 
 /* ===== GitHub Button (optional) ===== */
@@ -178,14 +285,6 @@ nav a:hover {
 .github-btn:hover {
   transform: translateY(-3px);
   background-color: var(--accent-soft);
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-}
-
-/* Optional: if you have a GitHub icon SVG, you can style it here */
-.github-icon {
-  width: 20px;
-  height: 20px;
-  fill: var(--text);
 }
 
 /* ========== Section Defaults ============= */
@@ -198,7 +297,7 @@ Every section:
 section {
   min-height: 100vh; /* Makes each section full screen height */
   padding-top: 80px; /* Space under navbar */
-  scroll-margin-top: 90px; /* Prevents navbar from covering section title */
+  scroll-margin-top: 100px; /* Prevents the navbar from covering section titles */
   background-color: var(--bg);
 }
 
@@ -219,10 +318,70 @@ section h2::after {
   border-radius: 2px;
 }
 
+/* ========== Section kicker (// comment-style label) ===== */
+.kicker {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  margin-bottom: 10px;
+}
+
+.kicker::before {
+  content: "// ";
+  color: var(--accent);
+}
+
+/* ========== Blinking terminal cursor ===== */
+.cursor {
+  display: inline-block;
+  color: var(--accent);
+  margin-left: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cursor {
+    animation: blink 1s steps(1) infinite;
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ========== Scroll-reveal ===== */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
+  transition-delay: calc(var(--reveal-i, 0) * 0.08s);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 /* ========== Welcome/Home Section (Hero) ======= */
 #welcome {
   min-height: calc(100vh - 90px); /* subtract nav height-ish */
-  color: black;
+  color: var(--text);
+
+  position: relative; /* contains the absolutely-positioned night-sky background */
+  overflow: hidden;
 
   display: flex;
   flex-direction: column; /* ✅ side-by-side */
@@ -233,6 +392,90 @@ section h2::after {
   text-align: left;
   padding: clamp(40px, 6vw, 90px) 6%;
   gap: clamp(20px, 4vw, 60px); /* ✅ space between text & photo */
+}
+
+/* ========== Hero night-sky background (HeroBackground.astro) ========== */
+.hero-orb {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* pointer-events stay on (unlike .hero-bg) so the orb can react to the cursor */
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none; /* purely decorative, never blocks clicks */
+}
+
+.hero-bg svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hb-star {
+  animation: hb-twinkle linear infinite;
+  transform-origin: center;
+}
+
+@keyframes hb-twinkle {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.hb-cloud-drift {
+  animation: hb-driftx ease-in-out infinite alternate;
+}
+
+@keyframes hb-driftx {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(14px);
+  }
+}
+
+.hb-shooting-star {
+  animation: hb-shoot linear infinite;
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+@keyframes hb-shoot {
+  0%,
+  86% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  87% {
+    opacity: 1;
+  }
+  93% {
+    opacity: 1;
+    transform: translateX(210px);
+  }
+  94%,
+  100% {
+    opacity: 0;
+    transform: translateX(216px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-star,
+  .hb-cloud-drift,
+  .hb-shooting-star {
+    animation: none !important;
+  }
 }
 
 /* Every direct child inside #welcome can grow up to 1100px wide — but no wider */
@@ -266,19 +509,18 @@ section h2::after {
 
 .btn-primary {
   background-color: var(--accent);
-  color: white;
+  color: var(--bg);
   padding: 10px 22px;
-  border-radius: 10px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
   font-weight: 600;
   text-decoration: none;
   transition: all 0.25s ease;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
 .btn-primary:hover {
   background-color: var(--accent-hover);
   transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
 }
 
 .btn-secondary {
@@ -286,17 +528,25 @@ section h2::after {
   border: 1.5px solid var(--border);
   color: var(--text);
   padding: 10px 22px;
-  border-radius: 10px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
   font-weight: 600;
   text-decoration: none;
   transition: all 0.25s ease;
 }
+
+.btn-secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 #welcome .btn-outline {
   background: transparent;
-  border: 2px solid var(--accent);
+  border: 1.5px solid var(--accent);
   color: var(--accent);
   padding: 10px 22px;
-  border-radius: 10px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
   font-weight: 600;
   text-decoration: none;
   transition: all 0.2s ease;
@@ -305,6 +555,20 @@ section h2::after {
 #welcome .btn-outline:hover {
   background-color: var(--accent-soft);
   transform: translateY(-2px);
+}
+
+/* Bracket motif on the hero CTAs only — echoes the <JE> logo mark */
+.hero-buttons a.btn-primary::before {
+  content: "[ ";
+}
+.hero-buttons a.btn-primary::after {
+  content: " ]";
+}
+.hero-buttons a.btn-outline::before {
+  content: "( ";
+}
+.hero-buttons a.btn-outline::after {
+  content: " )";
 }
 
 .hero {
@@ -318,6 +582,8 @@ section h2::after {
 
 /* Two column layout */
 .hero-container {
+  position: relative;
+  z-index: 1; /* sits above .hero-bg */
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -344,6 +610,7 @@ section h2::after {
 /* Buttons */
 .hero-buttons {
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
   margin-top: 28px;
 }
@@ -358,27 +625,35 @@ section h2::after {
 .hero-image img {
   width: 320px;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
-/* Placeholder card */
-.photo-placeholder {
+/* Hero photo card */
+.hero-photo {
   width: 340px;
   height: 420px;
-  background: linear-gradient(135deg, var(--accent-soft), #d1d5db);
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-weight: 600;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.hero-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 @media (max-width: 900px) {
   .hero-container {
     flex-direction: column;
+    align-items: stretch; /* let children fill the column width instead of sizing to content */
     text-align: center;
+  }
+
+  .hero-text {
+    max-width: 100%;
   }
 
   .hero-image {
@@ -401,30 +676,16 @@ section h2::after {
   padding: clamp(20px, 3vw, 60px) 6% clamp(80px, 8vw, 120px) 6%;
 }
 
-/* Main wrapper: holds the LEFT text column + RIGHT skills card */
+/* Wrapper: holds the about text (skills now live in their own section) */
 #about .about-wrap {
-  display: flex; /* Side-by-side layout */
-  align-items: center; /* Vertically centers the two columns relative to each other */
-  justify-content: space-between; /* Pushes text left and skills right */
-
-  /* Responsive gap so columns breathe on bigger screens */
-  gap: clamp(30px, 5vw, 90px);
-
-  gap: 50px; /* Space between the two columns */
   max-width: 1200px; /* Prevents the content from getting too wide */
   width: 100%;
   margin: 0 auto; /* Centers the wrapper horizontally */
 }
 
-/* LEFT column: about text */
+/* About text column */
 #about .about-text {
-  flex: 0 0 60%; /* Takes up ~55% of the wrapper width */
-  max-width: 650px; /* Keeps paragraphs readable (prevents super long lines) */
-}
-
-/* RIGHT column: skills/card area */
-#about .about-side {
-  flex: 0 0 40%; /* Takes up ~40% of the wrapper width */
+  max-width: 720px; /* Keeps paragraphs readable (prevents super long lines) */
 }
 
 /* Goals list (custom bullets) */
@@ -437,20 +698,21 @@ section h2::after {
 /* Each goal item */
 #about .goals li {
   position: relative; /* Allows ::before to be positioned relative to this li */
-  padding-left: 28px; /* Creates space on the left for the star bullet */
+  padding-left: 28px; /* Creates space on the left for the arrow marker */
   margin-bottom: 14px; /* Space between goal items */
   font-weight: 500; /* Slightly bolder for emphasis */
 }
 
-/* Custom star "bullet" for each goal */
+/* Custom arrow "bullet" for each goal */
 #about .goals li::before {
-  content: "★"; /* The star symbol itself */
+  content: "→"; /* The marker itself */
   position: absolute; /* FIX: must be absolute so it sits in the left padding space */
-  left: 0; /* Places the star at the left edge of the li */
-  top: 0; /* Aligns star to the top of the text line */
-  color: gold; /* Star color */
-  font-size: 1.2rem; /* Star size */
-  line-height: 1; /* Helps prevent weird vertical spacing */
+  left: 0; /* Places the marker at the left edge of the li */
+  top: 0; /* Aligns marker to the top of the text line */
+  color: var(--accent); /* Marker color */
+  font-family: var(--font-mono);
+  font-size: 1.1rem; /* Marker size */
+  line-height: 1.4; /* Helps prevent weird vertical spacing */
 }
 
 /* Paragraph styling for readable text blocks */
@@ -471,34 +733,6 @@ section h2::after {
   margin-bottom: 10px; /* Space below heading */
 }
 
-/* Optional subtitle under the heading */
-#about .subtitle {
-  font-size: clamp(1.1rem, 1.2vw, 1.3rem); /* Slightly larger than body text */
-  opacity: 0.85; /* Softens the subtitle */
-  margin-bottom: 22px; /* Space below subtitle */
-}
-
-/* Skills/card styling (glass-like panel) */
-#about .about-side {
-  background: rgba(255, 255, 255, 0.35); /* Semi-transparent background */
-  border: 1px solid rgba(0, 0, 0, 0.08); /* Light border for definition */
-  border-radius: 18px; /* Rounded corners */
-
-  /* Slightly responsive padding so it doesn't feel tight on big screens */
-  padding: clamp(18px, 2vw, 28px);
-
-  backdrop-filter: blur(
-    6px
-  ); /* Blurs background behind card (modern browsers) */
-}
-
-#about h3 {
-  font-size: clamp(2rem, 2.2vw, 2.8rem);
-  font-weight: 400; /* Semi-bold for the "Skills" title */
-  margin-bottom: 16px; /* Space below the heading */
-  text-align: center; /* Center the "Skills" title */
-}
-
 /* ===== Resume Buttons ===== */
 .resume-buttons {
   margin-top: 28px;
@@ -507,30 +741,13 @@ section h2::after {
   flex-wrap: wrap;
 }
 
-/* Primary Button (pink filled) */
-.btn-primary {
-  background-color: var(--accent);
-  color: white;
-  padding: 10px 22px;
-  border-radius: 8px;
-  font-weight: 600;
-  text-decoration: none;
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.btn-primary:hover {
-  background-color: var(--accent-hover);
-  transform: translateY(-2px);
-}
-
 /* Outline Button */
 .btn-resume {
-  border: 2px solid var(--accent);
+  border: 1.5px solid var(--accent);
   color: var(--accent);
+  font-family: var(--font-mono);
   padding: 8px 20px;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: 600;
   text-decoration: none;
   transition: all 0.2s ease;
@@ -545,33 +762,107 @@ section h2::after {
 .skills {
   display: flex; /* Makes chips line up in rows */
   flex-wrap: wrap; /* Allows chips to move to next line */
-  justify-content: center; /* Centers chips horizontally inside the card */
-  gap: clamp(15px, 2vw, 20px); /* Space between chips */
+  gap: clamp(10px, 1.4vw, 14px); /* Space between chips */
 }
 
 /* Individual skill chip */
-.skills span {
-  padding: 8px 16px; /* Chip size */
-  border-radius: 999px; /* Fully rounded pill shape */
+.skills .skill-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px; /* Chip size */
+  border-radius: 6px; /* Rectangular "tag" shape, not a pill */
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
   font-weight: 500; /* Medium bold text */
-  background-color: #f3f4f6; /* Light gray background */
+  background-color: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
 }
 
-/* Optional: stack earlier if it ever feels cramped */
-@media (max-width: 900px) {
-  #about .about-wrap {
+.skills .skill-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Tech logos inherit the chip's text color, so they recolor on hover for free */
+.skill-icon {
+  display: inline-flex;
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
+}
+
+.skill-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  display: block;
+}
+
+/* ========== Skills Section =========== */
+#skills {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: clamp(20px, 3vw, 60px) 6% clamp(80px, 8vw, 120px) 6%;
+}
+
+#skills .skills-wrap {
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+#skills h2 {
+  font-size: clamp(2rem, 2.2vw, 2.8rem);
+  margin-bottom: clamp(30px, 4vw, 50px);
+}
+
+.skill-categories {
+  display: flex;
+  flex-direction: column;
+}
+
+.skill-category {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(20px, 3vw, 40px);
+  padding: 22px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.skill-category:first-child {
+  padding-top: 0;
+}
+
+.skill-category:last-child {
+  border-bottom: none;
+}
+
+.skill-category-label {
+  flex: 0 0 200px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-top: 8px;
+}
+
+@media (max-width: 700px) {
+  .skill-category {
     flex-direction: column;
-    align-items: flex-start;
+    gap: 12px;
   }
 
-  #about .about-text,
-  #about .about-side {
-    flex: 1;
-    max-width: 100%;
-  }
-
-  #about .about-side {
-    width: 100%;
+  .skill-category-label {
+    flex: none;
+    padding-top: 0;
   }
 }
 
@@ -591,6 +882,10 @@ section h2::after {
 #projects .projects-wrap {
   width: 100%;
   max-width: 1100px; /* Prevents content from getting too wide */
+}
+
+#projects .projects-heading {
+  text-align: center;
 }
 
 .image-wrapper {
@@ -638,8 +933,9 @@ section h2::after {
 
 /* Project card base */
 #projects .project-card {
-  background: white;
-  border-radius: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
   padding: 24px;
 
   display: flex;
@@ -654,204 +950,296 @@ section h2::after {
 
   transition:
     transform 200ms ease,
-    box-shadow 200ms ease;
-
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    border-color 200ms ease;
 
   cursor: pointer;
 }
 
 /* Hover Lift Effect */
 #projects .project-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px);
   border-color: var(--accent);
-  border: 1px solid var(--accent);
 }
 
-/* Dark overlay (hidden until hover) */
-#projects .project-card::before {
-  content: "";
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  background-color: rgba(0, 0, 0, 0.5);
-
-  opacity: 0; /* Start hidden */
-  transition: 200ms ease; /* Smooth fade */
-  border: 2px solid black; /* Outer border */
-  border-radius: 16px; /* Slightly larger radius for the outer border */
-}
-
-#projects .project-card:hover::before {
-  opacity: 1;
-}
-
-/* Card title (normal state) */
+/* Card title */
 #projects .project-card h3 {
-  position: absolute;
-  font-size: clamp(1.5rem, 2vw, 1.8rem);
-  top: 50%;
-  left: 50%;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: translate(-50%, -50%);
-  color: #fff;
-  opacity: 0;
-  transition: opacity 200ms ease;
-}
-
-#projects .project-card:hover::before,
-#projects .project-card:hover h3 {
-  opacity: 1;
+  font-size: clamp(1.3rem, 1.8vw, 1.6rem);
+  color: var(--text);
+  margin: 0;
 }
 
 #projects .project-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: clamp(10px, 1.5vw, 15px);
+  gap: clamp(8px, 1.2vw, 12px);
   margin-top: auto; /* Pushes tags to bottom of card */
 }
 
 /* Individual skill chip */
 #projects .project-tags span {
-  padding: 6px 12px; /* Chip size */
-  border-radius: 999px; /* Fully rounded pill shape */
+  padding: 4px 11px; /* Chip size */
+  border-radius: 4px; /* Rectangular "tag" shape */
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
   font-weight: 500; /* Medium bold text */
 
-  background-color: var(--accent-soft);
-  color: var(--accent-hover);
+  background-color: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
 }
 
-/* ========== Contact Section (Split Layout) =========== */
+/* ========== Contact Section (centered) =========== */
 #contact {
   min-height: 100vh; /* Makes section at least full screen height */
   display: flex; /* Allows us to align content inside */
-  align-items: flex-start; /* Start content at top (not vertically centered) */
+  align-items: center;
+  justify-content: center;
   width: 100%; /* Full width section */
-  padding: 20px 6% 100px 6%; /* top | left/right | bottom */
+  padding: clamp(20px, 3vw, 60px) 6% clamp(80px, 8vw, 120px) 6%;
 }
 
-/* Wrapper that holds LEFT text + RIGHT form */
 #contact .contact-wrap {
-  display: flex; /* Put text and form side-by-side */
-  justify-content: space-between; /* Push left block left, form block right */
-  align-items: flex-start; /* Align both blocks to the top */
-  gap: clamp(
-    40px,
-    6vw,
-    140px
-  ); /* Space between the two columns (adjust as needed) */
-  width: 100%; /* Make sure wrapper spans full section width */
-}
-
-/* LEFT column */
-#contact .contact-text {
-  flex: 0 0 38%; /* Fixed ~40% width for the text column */
-}
-
-/* Headings + paragraph styling */
-#contact h2 {
-  font-size: clamp(2.5rem, 3.5vw, 3.2rem);
-  margin-bottom: 20px;
-  text-align: left;
-}
-
-#contact h4 {
-  font-size: clamp(1.2rem, 1.5vw, 1.5rem);
-  margin-bottom: 15px;
-  text-align: left;
-}
-
-#contact p {
-  font-size: clamp(1.2rem, 1.5vw, 1.5rem);
-  margin-bottom: 15px;
-  text-align: left;
-}
-
-/* Email line */
-#contact .contact-email {
-  font-size: clamp(1.2rem, 1.5vw, 1.5rem);
-  margin-bottom: 15px;
-  text-align: left;
-}
-
-#contact .contact-email a {
-  text-decoration: underline; /* Make it obvious it's a link */
-  transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    padding 0.2s ease;
-}
-
-#contact .contact-email a:hover {
-  color: white;
-  background-color: black; /* Adds a highlight effect */
-  padding: 5px 10px;
-  border-radius: 6px;
-}
-
-#contact .contact-visual {
-  flex: 0 0 60%; /* Fixed ~60% width for the visual column */
   width: 100%;
-  box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.35); /* Semi-transparent background */
-  border: 1px solid rgba(0, 0, 0, 0.08); /* Light border for definition */
-  border-radius: 18px; /* Rounded corners */
-
-  /* Slightly responsive padding so it doesn't feel tight on big screens */
-  padding: clamp(18px, 2vw, 28px);
-
-  backdrop-filter: blur(
-    6px
-  ); /* Blurs background behind card (modern browsers) */
-}
-
-#contact .contact-visual form {
-  width: 100%;
-  display: flex; /* Stack inputs vertically */
+  max-width: 980px;
+  margin: 0 auto;
+  display: flex;
   flex-direction: column;
-  gap: clamp(15px, 2vw, 20px); /* Spacing between label/input groups */
+  align-items: center;
 }
 
-/* Inputs + textarea */
+#contact .contact-heading {
+  text-align: center;
+  margin-bottom: clamp(30px, 4vw, 44px);
+}
+
+/* Info cards on the left, form on the right */
+.contact-columns {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(28px, 4vw, 48px);
+  width: 100%;
+}
+
+/* "Contact Me" as a centered pill/bubble instead of a plain heading */
+#contact h2.bubble-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  padding: 9px 22px;
+  margin: 0 0 20px;
+}
+
+/* This h2 is a pill, not an underlined heading — drop the generic accent bar */
+#contact h2.bubble-badge::after {
+  display: none;
+}
+
+#contact .contact-intro {
+  font-size: clamp(1.05rem, 1.3vw, 1.2rem);
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 46ch;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Left column: info cards + socials */
+.contact-info-block {
+  flex: 0 0 285px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  text-align: left;
+}
+
+.contact-chips {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+/* Each contact method as its own card: icon medallion + title/value stack */
+.contact-chip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+a.contact-chip:hover {
+  border-color: var(--accent);
+}
+
+.chip-icon-wrap {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+
+.chip-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0; /* lets long emails/values wrap instead of overflowing the card */
+}
+
+.chip-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.chip-value {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* LinkedIn / GitHub — reuses the same circular icon-button + tooltip as the nav */
+.contact-socials {
+  display: flex;
+  justify-content: flex-start;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+/* Form panel styled like a code editor window */
+.code-panel {
+  flex: 1 1 auto;
+  min-width: 0; /* lets the panel shrink instead of overflowing the row */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.code-panel-bar {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.code-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.code-dot-a {
+  background: #f2669b;
+}
+
+.code-dot-b {
+  background: #f2b84b;
+}
+
+.code-dot-c {
+  background: #7cf2a0;
+}
+
+.code-panel-title {
+  margin-left: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.code-panel form {
+  padding: clamp(20px, 3vw, 30px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Each field reads like a "key: value" line in a code block */
+.code-field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.code-field label .code-punct {
+  color: var(--accent);
+}
+
 #contact input,
 #contact textarea {
-  padding: clamp(10px, 1.5vw, 16px);
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: clamp(1rem, 1.2vw, 1.2rem);
-  font-family: inherit;
-  width: 100%; /* Fill the form column */
-  background-color: rgb(250, 250, 250);
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  border-radius: 0;
+  padding: 8px 2px;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--text);
 
-  /* Smooth hover change (put transition on the base rule) */
-  transition: background-color 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+#contact textarea {
+  resize: vertical;
+  min-height: 90px;
 }
 
 /* Hover effect for inputs */
 #contact input:hover,
 #contact textarea:hover {
-  background-color: rgb(211, 234, 255);
+  border-color: var(--accent);
+}
+
+/* Focus state (accessibility + terminal-style highlight) */
+#contact input:focus,
+#contact textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 1px 0 0 var(--accent);
 }
 
 /* Submit button */
 #contact button {
-  margin-top: 8px; /* Space above button */
-  font-size: clamp(0.9rem, 1.2vw, 1.2rem);
+  margin-top: 4px; /* Space above button */
+  align-self: flex-start;
+  font-size: clamp(0.9rem, 1.2vw, 1.05rem);
+  font-family: var(--font-mono);
   background-color: var(--accent);
-  color: white;
+  color: var(--bg);
   border: none;
-  border-radius: 8px;
-  padding: 8px 18px;
+  border-radius: 6px;
+  padding: 9px 22px;
   font-weight: 600;
   cursor: pointer;
-  width: fit-content; /* Prevent full-width button */
 
   /* Smooth hover animation */
   transition:
@@ -865,6 +1253,47 @@ section h2::after {
   transform: translateY(-2px);
 }
 
+/* Email / phone / location bubbles below the form */
+.contact-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.contact-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+a.contact-chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.chip-icon {
+  display: flex;
+  width: 15px;
+  height: 15px;
+  flex: 0 0 auto;
+}
+
+.chip-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
 /* Status message styling */
 #form-status {
   margin-top: 12px;
@@ -873,12 +1302,12 @@ section h2::after {
 
 /* Success state */
 #form-status.success {
-  color: #15803d; /* green */
+  color: #4ade80; /* bright green — readable on dark bg */
 }
 
 /* Error state */
 #form-status.error {
-  color: #b91c1c; /* red */
+  color: #f87171; /* bright coral-red — readable on dark bg */
 }
 
 /* Disabled state for the button while submitting */
@@ -887,15 +1316,14 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* ========== Mobile: stack layout ========== */
-@media (max-width: 768px) {
-  #contact .contact-wrap {
-    flex-direction: column; /* Stack text above form */
-    gap: clamp(20px, 3vw, 30px);
+/* ========== Mobile: stack the info column above the form ========== */
+@media (max-width: 760px) {
+  .contact-columns {
+    flex-direction: column;
   }
 
-  #contact .contact-text,
-  #contact form {
-    flex: 1; /* Let both take full width */
+  .contact-info-block {
+    flex-basis: auto;
+    width: 100%;
   }
 }

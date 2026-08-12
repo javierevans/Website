@@ -1,22 +1,19 @@
 ---
-
+import Orb from "./Orb.jsx";
 ---
 <section id="welcome">
 
+  <div class="hero-orb">
+    <Orb client:load hue={300} hoverIntensity={2.5} rotateOnHover={true} backgroundColor="#0A0F1A" />
+  </div>
+
   <div class="hero-container">
 
-    <div class="hero-text">
-      <h1>Javier Evans</h1>
+    <div class="hero-text" data-reveal>
+      <span class="kicker">whoami</span>
+      <h1>Javier Evans<span class="cursor">_</span></h1>
 
-      <p><b>Computer Science Student & Aspiring Software Engineer</b></p>
-
-      <p>
-        Focused on building real-world web applications and solving meaningful problems.
-      </p>
-
-      <p>
-        Currently developing full-stack projects and continuously improving my engineering fundamentals.
-      </p>
+      <p><b>Computer Science Student | Software&nbsp;Developer</b></p>
 
       <div class="hero-buttons">
         <a href="#projects" class="btn-primary">View Projects</a>
@@ -24,9 +21,9 @@
       </div>
     </div>
 
-    <div class="hero-image">
-      <div class="photo-placeholder">
-        Professional Photo Coming Soon
+    <div class="hero-image" data-reveal style="--reveal-i: 1">
+      <div class="hero-photo">
+        <img src="/images/javier-headshot.jpg" alt="Javier Evans" width="880" height="1100" />
       </div>
     </div>
 

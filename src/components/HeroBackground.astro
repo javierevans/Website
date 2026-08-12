@@ -1,0 +1,154 @@
+---
+// A quiet night sky behind the hero: curved horizon, layered flat-vector clouds,
+// a small floating island, and an occasional shooting star on the calmer left side
+// (where the hero text sits) so it never fights with readability.
+---
+
+<div class="hero-bg" aria-hidden="true">
+  <svg viewBox="0 0 1400 700" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <linearGradient id="hb-sky" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#05070C"/>
+        <stop offset="38%" stop-color="#080E1D"/>
+        <stop offset="62%" stop-color="#0C1A34"/>
+        <stop offset="82%" stop-color="#122A4E"/>
+        <stop offset="100%" stop-color="#1A3B66"/>
+      </linearGradient>
+
+      <!-- reusable scalloped cloud silhouette, hand-drawn outline rather than a soft blob -->
+      <g id="hb-cloud-shape" stroke="#050B18" stroke-width="3" stroke-linejoin="round">
+        <circle cx="0" cy="26" r="26"/><circle cx="26" cy="8" r="30"/><circle cx="58" cy="18" r="26"/>
+        <circle cx="90" cy="6" r="28"/><circle cx="120" cy="20" r="24"/><circle cx="146" cy="28" r="22"/>
+        <rect x="-14" y="26" width="176" height="36" rx="18"/>
+      </g>
+
+      <!-- 4-point sparkle star -->
+      <path id="hb-sparkle" d="M0,-9 C0.8,-3 3,-0.8 9,0 C3,0.8 0.8,3 0,9 C-0.8,3 -3,0.8 -9,0 C-3,-0.8 -0.8,-3 0,-9 Z"/>
+
+      <!-- shooting-star streak -->
+      <linearGradient id="hb-shootTail" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#EAF0FF" stop-opacity="0"/>
+        <stop offset="85%" stop-color="#EAF0FF" stop-opacity="0.95"/>
+        <stop offset="100%" stop-color="#FFFFFF" stop-opacity="1"/>
+      </linearGradient>
+      <g id="hb-shooting-star">
+        <line x1="-58" y1="0" x2="0" y2="0" stroke="url(#hb-shootTail)" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="0" cy="0" r="1.6" fill="#FFFFFF"/>
+      </g>
+
+      <!-- fine grain so the gradient doesn't read as a flat AI-smooth blend -->
+      <filter id="hb-grain" x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" result="noise"/>
+        <feColorMatrix in="noise" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0.5 0.5 0.5 0 0"/>
+      </filter>
+    </defs>
+
+    <rect width="1400" height="700" fill="url(#hb-sky)"/>
+    <rect width="1400" height="700" filter="url(#hb-grain)" opacity="0.05" style="mix-blend-mode:overlay"/>
+
+    <!-- stars, denser upper-left where the hero text sits -->
+    <g fill="#EAF0FF">
+      <circle class="hb-star" cx="120" cy="90" r="1.6" style="animation-duration:2.6s"/>
+      <circle class="hb-star" cx="230" cy="60" r="1.1" style="animation-duration:3.1s;animation-delay:.4s"/>
+      <circle class="hb-star" cx="330" cy="140" r="1.8" style="animation-duration:2.2s;animation-delay:.8s"/>
+      <circle class="hb-star" cx="60" cy="200" r="1.2" style="animation-duration:3.4s"/>
+      <circle class="hb-star" cx="410" cy="70" r="1.3" style="animation-duration:2.8s;animation-delay:.2s"/>
+      <circle class="hb-star" cx="500" cy="160" r="1.6" style="animation-duration:2.5s;animation-delay:1s"/>
+      <circle class="hb-star" cx="180" cy="260" r="1.1" style="animation-duration:3.6s"/>
+      <circle class="hb-star" cx="600" cy="90" r="1.4" style="animation-duration:2.9s;animation-delay:.6s"/>
+      <circle class="hb-star" cx="700" cy="200" r="1.7" style="animation-duration:2.4s"/>
+      <circle class="hb-star" cx="800" cy="120" r="1.2" style="animation-duration:3.2s;animation-delay:.3s"/>
+      <circle class="hb-star" cx="900" cy="60" r="1.5" style="animation-duration:2.7s"/>
+      <circle class="hb-star" cx="980" cy="150" r="1.1" style="animation-duration:3.3s;animation-delay:.5s"/>
+      <circle class="hb-star" cx="1050" cy="80" r="1.6" style="animation-duration:2.3s"/>
+      <circle class="hb-star" cx="1150" cy="130" r="1.2" style="animation-duration:3.5s;animation-delay:.7s"/>
+      <circle class="hb-star" cx="1250" cy="70" r="1.4" style="animation-duration:2.6s"/>
+      <circle class="hb-star" cx="1320" cy="160" r="1.7" style="animation-duration:2.1s;animation-delay:.4s"/>
+      <circle class="hb-star" cx="40" cy="340" r="1.3" style="animation-duration:3s"/>
+      <circle class="hb-star" cx="260" cy="330" r="1.1" style="animation-duration:3.4s;animation-delay:.9s"/>
+      <circle class="hb-star" cx="480" cy="280" r="1.2" style="animation-duration:2.9s"/>
+    </g>
+
+    <!-- crescent moon -->
+    <g transform="translate(240,150)">
+      <circle r="34" fill="#E8EEFC" opacity="0.92"/>
+      <circle cx="13" cy="-9" r="30" fill="#05070C"/>
+    </g>
+
+    <!-- sparkle stars, mixed in with the plain dots -->
+    <g fill="#EAF0FF">
+      <use href="#hb-sparkle" transform="translate(150,110) scale(0.7)" opacity="0.9"/>
+      <use href="#hb-sparkle" transform="translate(560,200) scale(0.55)" opacity="0.8"/>
+      <use href="#hb-sparkle" transform="translate(720,90) scale(0.8)" opacity="0.9"/>
+      <use href="#hb-sparkle" transform="translate(1300,90) scale(0.6)" opacity="0.85"/>
+      <use href="#hb-sparkle" transform="translate(380,240) scale(0.5)" opacity="0.75"/>
+    </g>
+
+    <!-- shooting stars, drifting through the calmer back sky on the left -->
+    <g transform="translate(90,60) rotate(24)">
+      <use href="#hb-shooting-star" class="hb-shooting-star" style="animation-duration:7s;animation-delay:.5s"/>
+    </g>
+    <g transform="translate(430,40) rotate(18)">
+      <use href="#hb-shooting-star" class="hb-shooting-star" style="animation-duration:9s;animation-delay:3.2s"/>
+    </g>
+    <g transform="translate(20,240) rotate(14)">
+      <use href="#hb-shooting-star" class="hb-shooting-star" style="animation-duration:8s;animation-delay:5.6s"/>
+    </g>
+    <g transform="translate(640,60) rotate(26)">
+      <use href="#hb-shooting-star" class="hb-shooting-star" style="animation-duration:10s;animation-delay:1.8s"/>
+    </g>
+
+    <!-- a tiny second island drifting far off in the starry distance -->
+    <g transform="translate(560,110) scale(0.5)" fill="#0E1B33" opacity="0.8">
+      <path d="M0,20 L14,4 L30,14 L46,0 L58,20 Z"/>
+      <use href="#hb-cloud-shape" transform="translate(-6,16) scale(0.4)" fill="#1B3358"/>
+    </g>
+
+    <!-- thin wispy clouds high in the sky, right side -->
+    <g fill="#3C5F92" opacity="0.5">
+      <ellipse cx="980" cy="110" rx="60" ry="8"/>
+      <ellipse cx="1180" cy="200" rx="45" ry="6"/>
+    </g>
+
+    <!-- the curved "planet" horizon, off-canvas to the lower right -->
+    <ellipse cx="1080" cy="760" rx="820" ry="430" fill="#0E1B33"/>
+    <ellipse cx="1080" cy="800" rx="760" ry="380" fill="#122442"/>
+    <!-- rim light where the atmosphere meets space -->
+    <ellipse cx="1080" cy="760" rx="820" ry="430" fill="none" stroke="#6FA8E0" stroke-opacity="0.35" stroke-width="2"/>
+
+    <!-- cloud clusters along the curve, back layer (smaller, darker, farther) -->
+    <g class="hb-cloud-drift" style="animation-duration:13s">
+      <use href="#hb-cloud-shape" transform="translate(720,450) scale(0.85)" fill="#152A4D"/>
+    </g>
+    <g class="hb-cloud-drift" style="animation-duration:14.5s;animation-delay:.4s">
+      <use href="#hb-cloud-shape" transform="translate(1240,440) scale(0.75)" fill="#152A4D"/>
+    </g>
+
+    <!-- mid layer -->
+    <g class="hb-cloud-drift" style="animation-duration:11s;animation-delay:.2s">
+      <use href="#hb-cloud-shape" transform="translate(950,510) scale(1.05)" fill="#22447A"/>
+    </g>
+    <g class="hb-cloud-drift" style="animation-duration:10s;animation-delay:.6s">
+      <use href="#hb-cloud-shape" transform="translate(1160,480) scale(0.95)" fill="#1B3358"/>
+    </g>
+
+    <!-- front layer (bigger, lighter, closer) -->
+    <g class="hb-cloud-drift" style="animation-duration:9s;animation-delay:.9s">
+      <use href="#hb-cloud-shape" transform="translate(1220,565) scale(1.35)" fill="#3C6BA3"/>
+    </g>
+    <g class="hb-cloud-drift" style="animation-duration:8.5s;animation-delay:.15s">
+      <use href="#hb-cloud-shape" transform="translate(800,555) scale(1.2)" fill="#2E5486"/>
+    </g>
+    <g class="hb-cloud-drift" style="animation-duration:12s;animation-delay:.5s">
+      <use href="#hb-cloud-shape" transform="translate(1010,585) scale(1.1)" fill="#356199"/>
+    </g>
+
+    <!-- floating island with a small volcano, perched on top of the cloud bank -->
+    <g transform="translate(880,390) scale(0.9)" stroke="#050B18" stroke-width="3" stroke-linejoin="round">
+      <path d="M-70,86 C-40,110 40,110 74,84 L60,40 C40,10 -10,4 -34,26 L-72,50 Z" fill="#0B1728"/>
+      <path d="M-34,26 C-10,4 40,10 60,40 L48,44 C34,20 -2,16 -22,32 Z" fill="#16233D"/>
+      <path d="M8,44 L26,2 L34,18 L48,-6 L60,40 Z" fill="#0C1830"/>
+      <path d="M26,2 L34,18 L22,20 Z" fill="#3C6BA3" opacity="0.55" stroke="none"/>
+    </g>
+  </svg>
+</div>

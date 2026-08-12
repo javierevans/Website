@@ -1,0 +1,89 @@
+---
+import pythonIcon from "../icons/python.svg?raw";
+import javascriptIcon from "../icons/javascript.svg?raw";
+import javaIcon from "../icons/java.svg?raw";
+import cIcon from "../icons/c.svg?raw";
+import cppIcon from "../icons/cplusplus.svg?raw";
+import html5Icon from "../icons/html5.svg?raw";
+import css3Icon from "../icons/css3.svg?raw";
+
+import astroIcon from "../icons/astro.svg?raw";
+import tailwindIcon from "../icons/tailwindcss.svg?raw";
+import reactIcon from "../icons/react.svg?raw";
+
+import gitIcon from "../icons/git.svg?raw";
+import githubIcon from "../icons/github.svg?raw";
+import vscodeIcon from "../icons/visualstudiocode.svg?raw";
+import pycharmIcon from "../icons/pycharm.svg?raw";
+
+// Concepts and focus areas aren't products with logos — reuse the site's bracket motif
+// and a simple drawn glyph instead of forcing a mismatched brand icon.
+const oopIcon = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><text x="12" y="17.5" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="15" font-weight="700">{}</text></svg>`;
+const fullstackIcon = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><text x="12" y="16.5" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="11" font-weight="700">&lt;/&gt;</text></svg>`;
+const securityIcon = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2 4 5v6c0 5.25 3.44 9.74 8 11 4.56-1.26 8-5.75 8-11V5l-8-3z"/></svg>`;
+
+const categories = [
+  {
+    label: "Languages",
+    skills: [
+      { name: "Python", icon: pythonIcon },
+      { name: "JavaScript", icon: javascriptIcon },
+      { name: "Java", icon: javaIcon },
+      { name: "C", icon: cIcon },
+      { name: "C++", icon: cppIcon },
+      { name: "HTML", icon: html5Icon },
+      { name: "CSS", icon: css3Icon },
+    ],
+  },
+  {
+    label: "Frameworks & Libraries",
+    skills: [
+      { name: "Astro", icon: astroIcon },
+      { name: "Tailwind CSS", icon: tailwindIcon },
+      { name: "React", icon: reactIcon },
+    ],
+  },
+  {
+    label: "Technologies",
+    skills: [
+      { name: "Git", icon: gitIcon },
+      { name: "GitHub", icon: githubIcon },
+      { name: "VS Code", icon: vscodeIcon },
+      { name: "PyCharm", icon: pycharmIcon },
+    ],
+  },
+  {
+    label: "Focus Areas",
+    skills: [
+      { name: "Frontend & Backend Dev", icon: fullstackIcon },
+      { name: "Cybersecurity", icon: securityIcon },
+      { name: "OOP", icon: oopIcon },
+    ],
+  },
+];
+---
+
+<section id="skills">
+  <div class="skills-wrap">
+    <div data-reveal>
+      <span class="kicker">skills</span>
+      <h2>Tech Stack</h2>
+    </div>
+
+    <div class="skill-categories">
+      {categories.map((category, i) => (
+        <div class="skill-category" data-reveal style={`--reveal-i: ${i + 1}`}>
+          <span class="skill-category-label">{category.label}</span>
+          <div class="skills">
+            {category.skills.map((skill) => (
+              <span class="skill-chip">
+                <span class="skill-icon" set:html={skill.icon} />
+                {skill.name}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
