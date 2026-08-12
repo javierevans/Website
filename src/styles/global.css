@@ -396,10 +396,25 @@ section h2::after {
 
 /* ========== Hero night-sky background (HeroBackground.astro) ========== */
 .hero-orb {
+  /* The orb's glow is a circle sized by the container's *smaller* side, so a
+     container that just matches the (wide, short) hero would leave the glow
+     stranded in the middle with empty space on both sides. Oversizing it into
+     a square anchored at center — cropped by #welcome's overflow:hidden —
+     makes the glow actually reach every edge instead. */
   position: absolute;
-  inset: 0;
+  top: 50%;
+  left: 50%;
+  width: 120vh;
+  height: 120vh;
+  transform: translate(-50%, -50%);
   z-index: 0;
   /* pointer-events stay on (unlike .hero-bg) so the orb can react to the cursor */
+}
+
+/* #welcome > * (an ID selector) outranks .hero-orb on specificity alone, so the
+   1100px cap below needs an equally-specific override here, not just a later rule */
+#welcome > .hero-orb {
+  max-width: none;
 }
 
 .hero-bg {
