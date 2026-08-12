@@ -380,6 +380,10 @@ section h2::after {
   min-height: calc(100vh - 90px); /* subtract nav height-ish */
   color: var(--text);
 
+  /* Full edge-to-edge wash behind the orb — the orb itself is a circular glow
+     that can never fill a rectangle on its own, no matter how big it's sized */
+  background: linear-gradient(135deg, #0a0f1a 0%, #120e22 35%, #23122f 68%, #34132a 100%);
+
   position: relative; /* contains the absolutely-positioned night-sky background */
   overflow: hidden;
 
@@ -396,17 +400,15 @@ section h2::after {
 
 /* ========== Hero night-sky background (HeroBackground.astro) ========== */
 .hero-orb {
-  /* The orb's glow is a circle sized by the container's *smaller* side, so a
-     container that just matches the (wide, short) hero would leave the glow
-     stranded in the middle with empty space on both sides. Oversizing it into
-     a square anchored at center — cropped by #welcome's overflow:hidden —
-     makes the glow actually reach every edge instead. */
+  /* Exactly matches #welcome's own box — its edge always coincides with the
+     section's own clipped boundary, so it's never visible as a separate
+     rectangle. (Oversizing this to make the glow reach the edges was the
+     wrong move: the ring is a circle sized off the container's smaller side,
+     so a bigger box just makes a bigger *box* — the "color reaches every
+     corner" job belongs to #welcome's gradient background below, not to the
+     canvas itself.) */
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 120vh;
-  height: 120vh;
-  transform: translate(-50%, -50%);
+  inset: 0;
   z-index: 0;
   /* pointer-events stay on (unlike .hero-bg) so the orb can react to the cursor */
 }
