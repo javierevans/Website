@@ -384,7 +384,7 @@ section h2::after {
   color: var(--text);
 
   /* No background here — body's fixed gradient shows through (see body{}) */
-  position: relative; /* contains the absolutely-positioned night-sky background */
+  position: relative;
   overflow: hidden;
 
   display: flex;
@@ -399,27 +399,6 @@ section h2::after {
 }
 
 /* ========== Hero night-sky background (HeroBackground.astro) ========== */
-.hero-orb {
-  /* Oversized into a centered square so the ring reaches close to every edge.
-     This used to leave a visible rectangular tint at the canvas's own bounds
-     (the shader's glow never quite reached zero alpha) — fixed at the source
-     in Orb.jsx's fragment shader, so it's safe to size this generously now. */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 120vh;
-  height: 120vh;
-  transform: translate(-50%, -50%);
-  z-index: 0;
-  /* pointer-events stay on (unlike .hero-bg) so the orb can react to the cursor */
-}
-
-/* #welcome > * (an ID selector) outranks .hero-orb on specificity alone, so the
-   1100px cap below needs an equally-specific override here, not just a later rule */
-#welcome > .hero-orb {
-  max-width: none;
-}
-
 .hero-bg {
   position: absolute;
   inset: 0;
@@ -696,14 +675,12 @@ section h2::after {
 
 /* Wrapper: holds the about text (skills now live in their own section) */
 #about .about-wrap {
-  max-width: 1200px; /* Prevents the content from getting too wide */
-  width: 100%;
-  margin: 0 auto; /* Centers the wrapper horizontally */
+  width: 100%; /* Fills the section's full width (section padding sets the margins) */
 }
 
 /* About text column */
 #about .about-text {
-  max-width: 720px; /* Keeps paragraphs readable (prevents super long lines) */
+  max-width: 100%; /* Stretch across the full section instead of a narrow column */
 }
 
 /* Goals list (custom bullets) */
@@ -741,7 +718,7 @@ section h2::after {
   font-size: clamp(1.05rem, 1vw, 1.18rem);
 
   margin-bottom: 16px; /* Space between paragraphs */
-  max-width: 62ch; /* Readable line length (ch = approx character width) */
+  max-width: 100%; /* Stretch across the full section width */
 }
 
 /* Main heading */
