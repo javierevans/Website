@@ -16,6 +16,13 @@
     overflow: hidden;
     /* No background of its own — body's site-wide gradient (global.css)
        shows through; the canvas only draws stars/nebulae/grain on top of it. */
+
+    /* Fade the canvas itself to transparent near the bottom instead of
+       cutting off in a hard line — dissolves into the same fixed body
+       gradient the section below shows, rather than trying to color-match
+       a background that (being `fixed`) doesn't resolve to one fixed value. */
+    mask-image: linear-gradient(to bottom, black 0%, black 78%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 78%, transparent 100%);
   }
   #starfield-canvas {
     width: 100%;
