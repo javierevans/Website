@@ -1011,6 +1011,85 @@ section h2::after {
   }
 }
 
+/* ========== GitHub Activity Section =========== */
+#activity {
+  /* No min-height — matches the About/Skills/Projects/Contact spacing fix:
+     each section hugs its own content instead of being forced to 100vh. */
+  min-height: auto;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 100px 6%;
+}
+
+#activity .activity-wrap {
+  width: 100%;
+  max-width: 1100px;
+}
+
+.activity-panel {
+  margin-top: clamp(30px, 4vw, 50px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.activity-panel-body {
+  padding: clamp(18px, 2.5vw, 28px);
+}
+
+.activity-command {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0 0 10px;
+}
+
+.activity-total {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--text);
+  margin: 0 0 20px;
+  font-variant-numeric: tabular-nums;
+}
+
+.activity-grid-scroll {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 4px; /* room for the box-shadow glow on high-activity dots */
+}
+
+.activity-grid-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.activity-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, 11px);
+  grid-auto-columns: 11px;
+  gap: 3px;
+  width: max-content;
+}
+
+.activity-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.activity-dot-pad {
+  background: transparent;
+}
+
+.activity-grid-empty {
+  display: block;
+  height: 60px;
+}
+
 /* ========== Projects Section =========== */
 #projects {
   /* min-height: auto overrides the generic section{} rule — see #about's comment. */

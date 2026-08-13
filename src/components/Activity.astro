@@ -1,0 +1,98 @@
+---
+---
+<section id="activity">
+  <div class="activity-wrap">
+    <div class="activity-heading" data-reveal>
+      <span class="kicker">activity</span>
+      <h2>GitHub Activity</h2>
+    </div>
+
+    <div class="activity-panel" data-reveal style="--reveal-i: 1">
+      <div class="code-panel-bar">
+        <span class="code-dot code-dot-a"></span>
+        <span class="code-dot code-dot-b"></span>
+        <span class="code-dot code-dot-c"></span>
+        <span class="code-panel-title">activity.sh</span>
+      </div>
+
+      <div class="activity-panel-body">
+        <p class="activity-command">$ git log --activity --author=javierevans</p>
+        <p class="activity-total" id="activity-total">Loading contribution data&hellip;</p>
+
+        <div class="activity-grid-scroll">
+          <div class="activity-grid" id="activity-grid" aria-label="GitHub contribution graph"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const API_URL = "https://github-contributions-api.jogruber.de/v4/javierevans";
+  // Mirrors the site's --accent token (#beaaff) — kept as a literal here since
+  // dot opacity is computed per-cell in JS, not something a CSS custom
+  // property alone can vary per element without inline styles anyway.
+  const ACCENT_RGB = "190, 170, 255";
+
+  type ContributionDay = { date: string; count: number; level: number };
+  type ContributionsResponse = {
+    total: Record<string, number>;
+    contributions: ContributionDay[];
+  };
+
+  function styleDot(el: HTMLElement, level: number) {
+    const opacity = 0.1 + (level / 4) * 0.9;
+    el.style.background = `rgba(${ACCENT_RGB}, ${opacity})`;
+    if (level >= 3) {
+      el.style.boxShadow = `0 0 6px rgba(${ACCENT_RGB}, ${opacity})`;
+    }
+  }
+
+  async function loadActivity() {
+    const totalEl = document.getElementById("activity-total");
+    const gridEl = document.getElementById("activity-grid");
+    if (!totalEl || !gridEl) return;
+
+    try {
+      const res = await fetch(API_URL);
+      if (!res.ok) throw new Error(`GitHub activity API responded ${res.status}`);
+      const data: ContributionsResponse = await res.json();
+
+      const year = String(new Date().getFullYear());
+      const yearDays = data.contributions.filter((d) => d.date.startsWith(year));
+      if (yearDays.length === 0) throw new Error("No contribution data for the current year");
+
+      const total = data.total?.[year] ?? yearDays.reduce((sum, d) => sum + d.count, 0);
+      totalEl.textContent = `${total} contribution${total === 1 ? "" : "s"} in ${year}`;
+
+      // Pad the front of the grid so the first real day lands in its correct
+      // day-of-week row — GitHub's own weeks run Sunday (0) through Saturday (6).
+      const firstDow = new Date(`${yearDays[0].date}T00:00:00`).getDay();
+      const frag = document.createDocumentFragment();
+
+      for (let i = 0; i < firstDow; i++) {
+        const pad = document.createElement("span");
+        pad.className = "activity-dot activity-dot-pad";
+        frag.appendChild(pad);
+      }
+
+      for (const day of yearDays) {
+        const dot = document.createElement("span");
+        dot.className = "activity-dot";
+        dot.title = `${day.count} contribution${day.count === 1 ? "" : "s"} on ${day.date}`;
+        styleDot(dot, day.level);
+        frag.appendChild(dot);
+      }
+
+      gridEl.innerHTML = "";
+      gridEl.appendChild(frag);
+    } catch (err) {
+      console.error("GitHub activity fetch failed:", err);
+      totalEl.textContent = "Activity data unavailable right now.";
+      gridEl.innerHTML = "";
+      gridEl.classList.add("activity-grid-empty");
+    }
+  }
+
+  loadActivity();
+</script>
