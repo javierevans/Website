@@ -1,4 +1,10 @@
-
+---
+import fileIcon from "../icons/file-text.svg?raw";
+import downloadIcon from "../icons/download.svg?raw";
+import toolIcon from "../icons/tool.svg?raw";
+import lightbulbIcon from "../icons/lightbulb.svg?raw";
+import targetIcon from "../icons/target.svg?raw";
+---
 
 <section id="about">
  <div class="about-wrap">
@@ -6,52 +12,43 @@
       <span class="kicker">about</span>
       <h2>About Me</h2>
 
-        <p>
-          Hey! I’m Javier Evans, a Computer Science student at The College of New Jersey
-          with a passion for building software that is practical, useful, and easy to use.
+      <div class="about-bio-wrap">
+        <span class="about-bio-quote-mark" aria-hidden="true">&#8220;</span>
+        <p class="about-bio-text">
+          Hey! I'm Javier Evans, a Computer Science student at The College of New Jersey who
+          enjoys building practical, user-friendly software. I'm passionate about web
+          development, full-stack development, and cybersecurity, and I'm always looking to
+          learn new technologies and improve my skills. Outside of coding, I enjoy gardening
+          and working out at the gym.
         </p>
+      </div>
 
-        <p>
-          I enjoy developing websites and applications that solve real-world problems, from
-          personal projects to full applications. I’m especially interested in web development,
-          full-stack development, and cybersecurity, and I’m always looking for opportunities
-          to expand my knowledge and take on new challenges.
-        </p>
+      <div class="resume-buttons">
+        <a href="/Javier_evans_Resume.pdf" target="_blank" class="btn-primary">
+          <span class="resume-btn-icon" set:html={fileIcon} />
+          View Resume
+        </a>
 
-        <p>
-          Through my coursework, personal projects, and software development experience, I’ve
-          learned to approach problems with curiosity, break complex ideas into manageable
-          pieces, and continuously improve my solutions. I enjoy learning how technology works
-          under the hood and using that knowledge to build better and more secure software.
-        </p>
+        <a href="/Javier_evans_Resume.pdf" download class="btn-resume">
+          <span class="resume-btn-icon" set:html={downloadIcon} />
+          Download Resume
+        </a>
+      </div>
 
-        <p>
-          Outside of coding, I enjoy gardening and working out at the gym. Both give me a chance
-          to step away from the computer while still challenging myself, learning, and improving
-          over time.
-        </p>
-
-        <p>
-          My goal is to continue growing as a software engineer, gain real-world industry
-          experience, contribute to meaningful projects, and become a well-rounded developer
-          with a strong foundation in software development and cybersecurity.
-        </p>
-          <div class="resume-buttons">
-  <a href="/Javier_evans_Resume.pdf" target="_blank" class="btn-primary">
-    View Resume
-  </a>
-
-  <a href="/Javier_evans_Resume.pdf" download class="btn-resume">
-    Download Resume
-  </a>
-</div>
-
-    <ul class="goals">
-        <li>Currently building: Portfolio + Garden Planner App</li>
-        <li>Interested in: Web dev, cybersecurity, ML, robotics</li>
-        <li>Goal: Internship / co-op 2026</li>
-  </ul>
-
+      <div class="about-facts">
+        <div class="about-fact-row">
+          <span class="about-fact-icon" set:html={toolIcon} />
+          <span class="about-fact-text">Currently building: Portfolio + Garden Planner App</span>
+        </div>
+        <div class="about-fact-row">
+          <span class="about-fact-icon" set:html={lightbulbIcon} />
+          <span class="about-fact-text">Interested in: web dev, cybersecurity, ML, robotics</span>
+        </div>
+        <div class="about-fact-row">
+          <span class="about-fact-icon" set:html={targetIcon} />
+          <span class="about-fact-text">Goal: internship or co-op in 2026</span>
+        </div>
+      </div>
 
   </div>
 </section>
