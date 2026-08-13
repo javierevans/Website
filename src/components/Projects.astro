@@ -31,7 +31,7 @@ const projects = [
       <h2>My Projects</h2>
     </div>
 
-    <div class="reel-wrap" data-reveal style="--reveal-i: 1">
+    <div class="reel-wrap">
       <button
         type="button"
         class="reel-arrow left"
@@ -41,12 +41,14 @@ const projects = [
 
       <div class="projects-reel" id="projects-reel">
         {
-          projects.map((project) => (
+          projects.map((project, i) => (
             <a
               href={project.href}
               target="_blank"
               rel="noopener noreferrer"
               class="project-card"
+              data-reveal
+              style={`--reveal-i: ${i}`}
             >
               <div class="project-card-image">
                 {project.image ? (
@@ -68,7 +70,7 @@ const projects = [
           ))
         }
 
-        <div class="project-card project-card-soon">
+        <div class="project-card project-card-soon" data-reveal style={`--reveal-i: ${projects.length}`}>
           <div class="project-card-soon-body">
             <span class="project-card-soon-icon">+</span>
             <span class="project-card-soon-text">More projects coming soon</span>

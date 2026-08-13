@@ -8,11 +8,11 @@ import targetIcon from "../icons/target.svg?raw";
 
 <section id="about">
  <div class="about-wrap">
-    <div class="about-text" data-reveal>
+    <div class="about-text">
       <span class="kicker">about</span>
       <h2>About Me</h2>
 
-      <div class="about-bio-wrap">
+      <div class="about-bio-wrap" data-reveal>
         <span class="about-bio-quote-mark" aria-hidden="true">&#8220;</span>
         <p class="about-bio-text">
           Hey! I'm Javier Evans, a Computer Science student at The College of New Jersey with
@@ -30,7 +30,7 @@ import targetIcon from "../icons/target.svg?raw";
         </p>
       </div>
 
-      <div class="resume-buttons">
+      <div class="resume-buttons" data-reveal style="--reveal-i: 1">
         <a href="/Javier_evans_Resume.pdf" target="_blank" class="btn-primary">
           <span class="resume-btn-icon" set:html={fileIcon} />
           View Resume
@@ -43,15 +43,15 @@ import targetIcon from "../icons/target.svg?raw";
       </div>
 
       <div class="about-facts">
-        <div class="about-fact-row">
+        <div class="about-fact-row" data-reveal style="--reveal-i: 2">
           <span class="about-fact-icon" set:html={toolIcon} />
           <span class="about-fact-text">Currently building: Portfolio + Garden Planner App</span>
         </div>
-        <div class="about-fact-row">
+        <div class="about-fact-row" data-reveal style="--reveal-i: 3">
           <span class="about-fact-icon" set:html={lightbulbIcon} />
           <span class="about-fact-text">Interested in: web dev, cybersecurity, ML, robotics</span>
         </div>
-        <div class="about-fact-row">
+        <div class="about-fact-row" data-reveal style="--reveal-i: 4">
           <span class="about-fact-icon" set:html={targetIcon} />
           <span class="about-fact-text">Goal: internship or co-op in 2026</span>
         </div>
