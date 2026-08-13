@@ -757,6 +757,10 @@ section h2::after {
   padding-left: 32px;
 }
 
+#about .about-bio-text + .about-bio-text {
+  margin-top: 14px;
+}
+
 /* Fact rows — replace the old arrow-bullet goals list */
 .about-facts {
   margin-top: 20px;
