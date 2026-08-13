@@ -1030,19 +1030,6 @@ section h2::after {
   text-align: center;
 }
 
-.image-wrapper {
-  width: 100%;
-  height: 180px;
-  overflow: hidden;
-}
-
-.project-image {
-  width: 100%;
-  height: 180px; /* Fixed height for uniformity */
-  object-fit: contain; /* Ensures the image covers the area without distortion */
-  display: block; /* Fixes any weird spacing issues with images */
-}
-
 /* Section title */
 #projects h2 {
   color: var(--text);
@@ -1062,72 +1049,223 @@ section h2::after {
   border-radius: 2px;
 }
 
-/* Responsive grid of project cards */
-#projects .project-grid {
-  display: grid; /* Use CSS Grid for layout */
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(280px, 1fr)
-  ); /* Responsive columns */
-  gap: 30px; /* Space between project cards */
-  width: 100%; /* Full width of the section */
+/* Horizontal scrolling "film reel" of project cards */
+.reel-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.projects-reel {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* old Edge */
+
+  /* Generous vertical padding, not just the 8px a plain scroll strip would need —
+     the hover pop (scale + translateY + box-shadow below) needs room to breathe
+     without getting clipped by this element's own overflow-x: auto, which also
+     forces overflow-y to 'auto' per spec (a lone overflow-x never stays paired
+     with a truly visible overflow-y). */
+  padding: 28px 4px 32px;
+}
+
+.projects-reel::-webkit-scrollbar {
+  display: none;
 }
 
 /* Project card base */
 #projects .project-card {
+  min-width: 260px;
+  max-width: 260px;
+  flex-shrink: 0;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 24px;
+  border-radius: 12px;
+  overflow: hidden;
 
   display: flex;
   flex-direction: column;
-  gap: clamp(16px, 2vw, 20px);
 
-  position: relative;
-  overflow: hidden;
-
-  text-decoration: none; /* Remove underline */
-  color: inherit; /* Keep normal text color */
+  text-decoration: none;
+  color: inherit;
 
   transition:
-    transform 200ms ease,
-    border-color 200ms ease;
+    transform 250ms ease,
+    box-shadow 250ms ease,
+    border-color 250ms ease;
 
   cursor: pointer;
 }
 
-/* Hover Lift Effect */
+/* Pop the hovered card above its neighbors without pushing their layout —
+   transform doesn't affect flex sizing, so siblings never compress or shift */
 #projects .project-card:hover {
-  transform: translateY(-6px);
+  transform: scale(1.06) translateY(-6px);
+  box-shadow: 0 12px 32px var(--accent-soft);
   border-color: var(--accent);
+  z-index: 2;
+  position: relative;
 }
 
-/* Card title */
-#projects .project-card h3 {
-  font-size: clamp(1.3rem, 1.8vw, 1.6rem);
+.project-card-image {
+  height: 130px;
+  flex-shrink: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.project-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-card-placeholder {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+  padding: 0 16px;
+  text-align: center;
+}
+
+.project-card-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.project-card-title {
+  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  font-weight: 600;
   color: var(--text);
   margin: 0;
 }
 
-#projects .project-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: clamp(8px, 1.2vw, 12px);
-  margin-top: auto; /* Pushes tags to bottom of card */
+.project-card-desc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.55;
+  margin: 0 0 6px;
 }
 
-/* Individual skill chip */
-#projects .project-tags span {
-  padding: 4px 11px; /* Chip size */
-  border-radius: 4px; /* Rectangular "tag" shape */
+.project-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto; /* pushes tags to the bottom of the card */
+}
+
+/* Individual project tag */
+.project-tag {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+/* "More coming soon" placeholder — only two real projects exist, and a
+   two-card reel doesn't give the scroll/arrow interaction anywhere to go */
+#projects .project-card-soon {
+  border: 1.5px dashed var(--border);
+  background: transparent;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+}
+
+#projects .project-card-soon:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--accent);
+}
+
+.project-card-soon-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.project-card-soon-icon {
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  color: var(--muted);
+}
+
+.project-card-soon-text {
   font-family: var(--font-mono);
   font-size: 0.78rem;
-  font-weight: 500; /* Medium bold text */
-
-  background-color: transparent;
-  border: 1px solid var(--border);
   color: var(--muted);
+}
+
+/* Directional scroll arrows */
+.reel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 3;
+  padding: 0;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.reel-arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+.reel-arrow:hover {
+  background: var(--accent-soft);
+}
+
+.reel-arrow:active {
+  transform: translateY(-50%) scale(0.94);
+}
+
+.reel-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+  pointer-events: none;
+}
+
+.reel-arrow.left {
+  left: -18px;
+}
+
+.reel-arrow.right {
+  right: -18px;
+}
+
+@media (max-width: 900px) {
+  /* Arrows sit outside the reel's own box and start crowding the section's
+     edges at this width — touch swipe already covers scrolling natively */
+  .reel-arrow {
+    display: none;
+  }
 }
 
 /* ========== Contact Section (centered) =========== */

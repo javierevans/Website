@@ -1,48 +1,129 @@
+---
+import chevronLeftIcon from "../icons/chevron-left.svg?raw";
+import chevronRightIcon from "../icons/chevron-right.svg?raw";
+
+const projects = [
+  {
+    title: "Personal Portfolio",
+    description:
+      "A personal website built with Astro, showcasing my projects, skills, and background. It features a clean design, responsive layout, and smooth navigation to provide an engaging user experience.",
+    tags: ["Astro", "CSS", "Responsive"],
+    href: "https://github.com/javierevans/Website",
+    image: null,
+  },
+  {
+    title: "Smart-Garden",
+    description:
+      "A web application designed to help users plan and manage their gardens. It includes features for tracking plant growth, scheduling watering, and providing gardening tips based on plant types.",
+    tags: ["JavaScript", "UI Design", "Planning Logic", "React"],
+    href: "https://github.com/javierevans/Garden-App",
+    image: "/images/gardenPlannerimg (1).png",
+    imageAlt: "Garden Planner App Preview",
+  },
+];
+---
+
 <section id="projects">
-    <div class="projects-wrap">
-        <div class="projects-heading" data-reveal>
-            <span class="kicker">projects</span>
-            <h2>My Projects</h2>
-        </div>
-
-    <div class="project-grid">
-        <a href="https://github.com/javierevans/Website"
-            target="_blank"
-            rel="noopener noreferrer"
-             class="project-card" data-reveal>
-                <h3>Personal Portfolio</h3>
-            <p>
-                 A personal website built with Astro, showcasing my projects, skills, and background.
-                 It features a clean design, responsive layout, and smooth navigation to provide an engaging
-                user experience.
-             </p>
-         <div class="project-tags">
-                <span>Astro</span>
-                <span>CSS</span>
-                <span>Responsive</span>
-  </div>
-    </a>
-         <a href="https://github.com/javierevans/Garden-App"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="project-card" data-reveal style="--reveal-i: 1">
-            <div class="image-wrap">
-            <img src="/images/gardenPlannerimg (1).png" alt="Garden Planner App Preview" class="project-image">
-                </div>
-
-            <h3>Smart-Garden</h3>
-            
-            <p>
-                 A web application designed to help users plan and manage their gardens. It includes features
-                for tracking plant growth, scheduling watering, and providing gardening tips based on plant types.
-            </p>
-    <div class="project-tags">
-            <span>JavaScript</span>
-            <span>UI Design</span>
-             <span>Planning Logic</span>
-             <span>React</span>
-  </div>
-        </a>
-     </div>
+  <div class="projects-wrap">
+    <div class="projects-heading" data-reveal>
+      <span class="kicker">projects</span>
+      <h2>My Projects</h2>
     </div>
+
+    <div class="reel-wrap" data-reveal style="--reveal-i: 1">
+      <button
+        type="button"
+        class="reel-arrow left"
+        aria-label="Scroll projects left"
+        set:html={chevronLeftIcon}
+      />
+
+      <div class="projects-reel" id="projects-reel">
+        {
+          projects.map((project) => (
+            <a
+              href={project.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="project-card"
+            >
+              <div class="project-card-image">
+                {project.image ? (
+                  <img src={project.image} alt={project.imageAlt} />
+                ) : (
+                  <span class="project-card-placeholder">&lt;/&gt; {project.title}</span>
+                )}
+              </div>
+              <div class="project-card-body">
+                <h3 class="project-card-title">{project.title}</h3>
+                <p class="project-card-desc">{project.description}</p>
+                <div class="project-card-tags">
+                  {project.tags.map((tag) => (
+                    <span class="project-tag">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </a>
+          ))
+        }
+
+        <div class="project-card project-card-soon">
+          <div class="project-card-soon-body">
+            <span class="project-card-soon-icon">+</span>
+            <span class="project-card-soon-text">More projects coming soon</span>
+          </div>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="reel-arrow right"
+        aria-label="Scroll projects right"
+        set:html={chevronRightIcon}
+      />
+    </div>
+  </div>
 </section>
+
+<script>
+  const reel = document.getElementById("projects-reel");
+  const leftArrow = document.querySelector<HTMLButtonElement>(".reel-arrow.left");
+  const rightArrow = document.querySelector<HTMLButtonElement>(".reel-arrow.right");
+
+  if (reel && leftArrow && rightArrow) {
+    const scrollAmount = () => Math.min(reel.clientWidth * 0.8, 320);
+    leftArrow.addEventListener("click", () =>
+      reel.scrollBy({ left: -scrollAmount(), behavior: "smooth" }),
+    );
+    rightArrow.addEventListener("click", () =>
+      reel.scrollBy({ left: scrollAmount(), behavior: "smooth" }),
+    );
+
+    // With only a couple of real projects, the reel often fits without
+    // overflowing on wide screens — arrows that click and do nothing read as
+    // broken, so hide them entirely when there's nothing to scroll to, and
+    // disable whichever end is already fully scrolled. Below 900px the CSS
+    // hides them in favor of native touch swipe — match that breakpoint here
+    // too, since an inline style.display would otherwise always win over the
+    // stylesheet's @media rule and defeat it.
+    const narrowMql = window.matchMedia("(max-width: 900px)");
+    const updateArrows = () => {
+      if (narrowMql.matches) {
+        leftArrow.style.display = "";
+        rightArrow.style.display = "";
+        return;
+      }
+      const hasOverflow = reel.scrollWidth > reel.clientWidth + 1;
+      leftArrow.style.display = hasOverflow ? "flex" : "none";
+      rightArrow.style.display = hasOverflow ? "flex" : "none";
+      if (hasOverflow) {
+        leftArrow.disabled = reel.scrollLeft <= 1;
+        rightArrow.disabled = reel.scrollLeft >= reel.scrollWidth - reel.clientWidth - 1;
+      }
+    };
+
+    reel.addEventListener("scroll", updateArrows);
+    window.addEventListener("resize", updateArrows);
+    updateArrows();
+  }
+</script>
