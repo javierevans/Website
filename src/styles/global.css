@@ -886,6 +886,42 @@ section h2::after {
   color: var(--accent);
 }
 
+/* Category color-coding. Same specificity as the hover rule above, so a
+   plain color-swap hover would silently lose to whichever rule comes
+   last — used a lift instead so hover stays visible on every category
+   without fighting its color. */
+.skills .skill-chip.lang {
+  background: #1a2740;
+  border-color: rgba(143, 184, 255, 0.33);
+  color: #8fb8ff;
+}
+
+.skills .skill-chip.framework {
+  background: #241f47;
+  border-color: rgba(190, 170, 255, 0.33);
+  color: #beaaff;
+}
+
+.skills .skill-chip.tech {
+  background: #132a24;
+  border-color: rgba(93, 202, 165, 0.33);
+  color: #5dcaa5;
+}
+
+.skills .skill-chip.focus {
+  background: #332711;
+  border-color: rgba(239, 199, 117, 0.33);
+  color: #efc775;
+}
+
+.skills .skill-chip.lang:hover,
+.skills .skill-chip.framework:hover,
+.skills .skill-chip.tech:hover,
+.skills .skill-chip.focus:hover {
+  filter: brightness(1.18);
+  transform: translateY(-1px);
+}
+
 /* Tech logos inherit the chip's text color, so they recolor on hover for free */
 .skill-icon {
   display: inline-flex;
@@ -905,7 +941,9 @@ section h2::after {
 #skills {
   min-height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* was center — that centered the (shorter than 100vh) content
+    block vertically, leaving a large empty gap above "// skills". Top-aligned to match
+    #about's rhythm instead, using the same padding values. */
   width: 100%;
   padding: clamp(20px, 3vw, 60px) 6% clamp(80px, 8vw, 120px) 6%;
 }
@@ -930,8 +968,13 @@ section h2::after {
   display: flex;
   align-items: flex-start;
   gap: clamp(20px, 3vw, 40px);
-  padding: 22px 0;
-  border-bottom: 1px solid var(--border);
+  padding-top: 22px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  /* var(--border) is a dark navy that nearly disappears against parts of the
+     page's fixed diagonal gradient — a translucent white reads consistently
+     regardless of which part of that gradient sits behind it. */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .skill-category:first-child {
@@ -940,6 +983,8 @@ section h2::after {
 
 .skill-category:last-child {
   border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .skill-category-label {

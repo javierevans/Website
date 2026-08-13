@@ -25,6 +25,7 @@ const securityIcon = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg
 const categories = [
   {
     label: "Languages",
+    key: "lang",
     skills: [
       { name: "Python", icon: pythonIcon },
       { name: "JavaScript", icon: javascriptIcon },
@@ -37,6 +38,7 @@ const categories = [
   },
   {
     label: "Frameworks & Libraries",
+    key: "framework",
     skills: [
       { name: "Astro", icon: astroIcon },
       { name: "Tailwind CSS", icon: tailwindIcon },
@@ -45,6 +47,7 @@ const categories = [
   },
   {
     label: "Technologies",
+    key: "tech",
     skills: [
       { name: "Git", icon: gitIcon },
       { name: "GitHub", icon: githubIcon },
@@ -54,6 +57,7 @@ const categories = [
   },
   {
     label: "Focus Areas",
+    key: "focus",
     skills: [
       { name: "Frontend & Backend Dev", icon: fullstackIcon },
       { name: "Cybersecurity", icon: securityIcon },
@@ -76,7 +80,7 @@ const categories = [
           <span class="skill-category-label">{category.label}</span>
           <div class="skills">
             {category.skills.map((skill) => (
-              <span class="skill-chip">
+              <span class={`skill-chip ${category.key}`}>
                 <span class="skill-icon" set:html={skill.icon} />
                 {skill.name}
               </span>
