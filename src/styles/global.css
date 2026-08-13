@@ -1058,6 +1058,7 @@ section h2::after {
 .projects-reel {
   display: flex;
   gap: 20px;
+  justify-content: flex-start;
   overflow-x: auto;
   scroll-behavior: smooth;
   scrollbar-width: none; /* Firefox */
@@ -1071,14 +1072,25 @@ section h2::after {
   padding: 28px 4px 32px;
 }
 
+/* Centers the row when it's narrower than its container (e.g. only a
+   couple of cards on a wide screen) instead of clumping left. Only
+   applied via JS when the row doesn't actually need to scroll — centering
+   unconditionally on a scrollable flex row leaves its leading edge stuck:
+   native overflow containers clamp scrollLeft to 0, not the negative start
+   offset that centering would otherwise begin it at, so the first card(s)
+   would become permanently unreachable. */
+.projects-reel.fits {
+  justify-content: center;
+}
+
 .projects-reel::-webkit-scrollbar {
   display: none;
 }
 
 /* Project card base */
 #projects .project-card {
-  min-width: 260px;
-  max-width: 260px;
+  min-width: 340px;
+  max-width: 340px;
   flex-shrink: 0;
   background: var(--surface);
   border: 1px solid var(--border);
@@ -1110,7 +1122,7 @@ section h2::after {
 }
 
 .project-card-image {
-  height: 130px;
+  height: 170px;
   flex-shrink: 0;
   background: var(--bg);
   display: flex;
@@ -1135,7 +1147,7 @@ section h2::after {
 }
 
 .project-card-body {
-  padding: 16px;
+  padding: 22px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -1143,16 +1155,16 @@ section h2::after {
 }
 
 .project-card-title {
-  font-size: clamp(1rem, 1.2vw, 1.15rem);
+  font-size: 1.125rem;
   font-weight: 600;
   color: var(--text);
   margin: 0;
 }
 
 .project-card-desc {
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   color: var(--muted);
-  line-height: 1.55;
+  line-height: 1.6;
   margin: 0 0 6px;
 }
 
@@ -1168,9 +1180,9 @@ section h2::after {
   background: var(--accent-soft);
   color: var(--accent);
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 500;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 999px;
 }
 

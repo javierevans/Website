@@ -9,7 +9,8 @@ const projects = [
       "A personal website built with Astro, showcasing my projects, skills, and background. It features a clean design, responsive layout, and smooth navigation to provide an engaging user experience.",
     tags: ["Astro", "CSS", "Responsive"],
     href: "https://github.com/javierevans/Website",
-    image: null,
+    image: "/images/personal-portfolio-thumbnail.svg",
+    imageAlt: "Personal Portfolio site preview",
   },
   {
     title: "Smart-Garden",
@@ -108,12 +109,17 @@ const projects = [
     // stylesheet's @media rule and defeat it.
     const narrowMql = window.matchMedia("(max-width: 900px)");
     const updateArrows = () => {
+      const hasOverflow = reel.scrollWidth > reel.clientWidth + 1;
+
+      // Center the row when it doesn't need to scroll (independent of the
+      // breakpoint below — a short row should stay centered on mobile too).
+      reel.classList.toggle("fits", !hasOverflow);
+
       if (narrowMql.matches) {
         leftArrow.style.display = "";
         rightArrow.style.display = "";
         return;
       }
-      const hasOverflow = reel.scrollWidth > reel.clientWidth + 1;
       leftArrow.style.display = hasOverflow ? "flex" : "none";
       rightArrow.style.display = hasOverflow ? "flex" : "none";
       if (hasOverflow) {
