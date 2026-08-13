@@ -714,13 +714,17 @@ section h2::after {
 }
 /* ========== About Me Section ============ */
 #about {
-  min-height: 100vh; /* Makes the About section at least full screen height */
+  /* Explicitly overriding the generic section{} rule's min-height: 100vh
+     below — forcing every section to a uniform 100vh regardless of content
+     was the actual cause of uneven section gaps (measured up to 470px vs
+     209px between different section pairs), not the padding values, which
+     were already identical across most of these sections. Letting each
+     section hug its own content height means a single shared padding
+     produces a genuinely uniform gap everywhere. */
+  min-height: auto;
   display: flex; /* Lets you align/position the inner wrapper more easily */
-  align-items: flex-start; /* Keeps content starting near the top (not vertically centered) */
   width: 100%; /* Full width section */
-
-  /* Responsive padding: grows slightly on bigger screens */
-  padding: clamp(20px, 3vw, 60px) 6% clamp(80px, 8vw, 120px) 6%;
+  padding: 100px 6%;
 }
 
 /* Wrapper: holds the about text (skills now live in their own section) */
@@ -939,13 +943,11 @@ section h2::after {
 
 /* ========== Skills Section =========== */
 #skills {
-  min-height: 100vh;
+  /* min-height: auto overrides the generic section{} rule — see #about's comment. */
+  min-height: auto;
   display: flex;
-  align-items: flex-start; /* was center — that centered the (shorter than 100vh) content
-    block vertically, leaving a large empty gap above "// skills". Top-aligned to match
-    #about's rhythm instead, using the same padding values. */
   width: 100%;
-  padding: clamp(20px, 3vw, 60px) 6% clamp(80px, 8vw, 120px) 6%;
+  padding: 100px 6%;
 }
 
 #skills .skills-wrap {
@@ -1011,12 +1013,12 @@ section h2::after {
 
 /* ========== Projects Section =========== */
 #projects {
-  min-height: 100vh; /* Makes section at least full screen height */
-  display: flex; /* Allows us to align content inside */
-  align-items: center; /* Vertical centering */
-  justify-content: center; /* Horizontal centering */
+  /* min-height: auto overrides the generic section{} rule — see #about's comment. */
+  min-height: auto;
+  display: flex;
+  justify-content: center; /* Horizontal centering — still needed, unlike align-items */
   width: 100%; /* Full width section */
-  padding: 20px 6% 100px 6%; /* top | left/right | bottom */
+  padding: 100px 6%;
   border: 1px solid var(--border);
 }
 
@@ -1280,14 +1282,14 @@ section h2::after {
   }
 }
 
-/* ========== Contact Section (centered) =========== */
+/* ========== Contact Section =========== */
 #contact {
-  min-height: 100vh; /* Makes section at least full screen height */
-  display: flex; /* Allows us to align content inside */
-  align-items: center;
-  justify-content: center;
+  /* min-height: auto overrides the generic section{} rule — see #about's comment. */
+  min-height: auto;
+  display: flex;
+  justify-content: center; /* Horizontal centering — still needed, unlike align-items */
   width: 100%; /* Full width section */
-  padding: clamp(20px, 3vw, 60px) 6% clamp(80px, 8vw, 120px) 6%;
+  padding: 100px 6%;
 }
 
 #contact .contact-wrap {
