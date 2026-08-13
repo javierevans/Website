@@ -1,0 +1,288 @@
+---
+// StarfieldBackground.astro
+// Rendered as the first child inside #welcome, behind the hero content
+// (which is raised above it via position: relative; z-index: 1).
+---
+
+<div class="starfield-wrap" aria-hidden="true">
+  <canvas id="starfield-canvas"></canvas>
+</div>
+
+<style>
+  .starfield-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    /* No background of its own — body's site-wide gradient (global.css)
+       shows through; the canvas only draws stars/nebulae/grain on top of it. */
+  }
+  #starfield-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+</style>
+
+<script>
+  (function () {
+    const canvas = document.getElementById('starfield-canvas') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d')!;
+    let DPR = Math.min(window.devicePixelRatio || 1, 2);
+    let W = 0, H = 0;
+    const stars: any[] = [];
+    const nebulae: any[] = [];
+    let grainCanvas: HTMLCanvasElement | null = null;
+    const bandAngle = -0.35;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function buildGrain() {
+      const g = document.createElement('canvas');
+      g.width = 120;
+      g.height = 120;
+      const gc = g.getContext('2d')!;
+      const id = gc.createImageData(120, 120);
+      for (let i = 0; i < id.data.length; i += 4) {
+        const v = Math.random() * 255;
+        id.data[i] = v;
+        id.data[i + 1] = v;
+        id.data[i + 2] = v;
+        id.data[i + 3] = 14;
+      }
+      gc.putImageData(id, 0, 0);
+      grainCanvas = g;
+    }
+
+    function distToBand(x: number, y: number) {
+      const cx = W / 2, cy = H * 0.55;
+      const dx = x - cx, dy = y - cy;
+      const nx = Math.sin(bandAngle), ny = -Math.cos(bandAngle);
+      return Math.abs(dx * nx + dy * ny);
+    }
+
+    function buildScene() {
+      stars.length = 0;
+      const total = 260;
+      for (let i = 0; i < total; i++) {
+        let x = Math.random() * W, y = Math.random() * H;
+        if (Math.random() < 0.55) {
+          let tries = 0;
+          while (distToBand(x, y) > H * 0.16 && tries < 6) {
+            x = Math.random() * W;
+            y = Math.random() * H;
+            tries++;
+          }
+        }
+        const r = Math.random();
+        let size, bright;
+        if (r > 0.985) { size = 1.8 + Math.random() * 1.2; bright = true; }
+        else if (r > 0.92) { size = 1 + Math.random() * 0.7; bright = false; }
+        else if (r > 0.6) { size = 0.5 + Math.random() * 0.5; bright = false; }
+        else { size = 0.2 + Math.random() * 0.35; bright = false; }
+        const cr = Math.random();
+        const color = cr > 0.85 ? '190,210,255' : cr > 0.7 ? '255,235,210' : cr > 0.6 ? '255,215,180' : '255,255,255';
+        stars.push({ x, y, size, phase: Math.random() * 7, speed: 0.4 + Math.random() * 1.3, color, bright });
+      }
+      nebulae.length = 0;
+      for (let i = 0; i < 4; i++) {
+        const t = Math.random();
+        const cx = W / 2 + (t - 0.5) * W * 1.3 * Math.cos(bandAngle);
+        const cy = H * 0.55 + (t - 0.5) * W * 1.3 * Math.sin(bandAngle) * -1;
+        nebulae.push({ x: cx, y: Math.max(0, Math.min(H, cy)), r: 90 + Math.random() * 90, hue: Math.random() < 0.5 ? '190,170,255' : '143,184,255' });
+      }
+    }
+
+    function resize() {
+      W = canvas.offsetWidth;
+      H = canvas.offsetHeight;
+      canvas.width = W * DPR;
+      canvas.height = H * DPR;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      buildScene();
+    }
+    window.addEventListener('resize', resize);
+    buildGrain();
+    resize();
+
+    let mouse: { x: number; y: number } | null = null;
+    canvas.addEventListener('mousemove', (e) => {
+      const r = canvas.getBoundingClientRect();
+      mouse = { x: e.clientX - r.left, y: e.clientY - r.top };
+    });
+    canvas.addEventListener('mouseleave', () => { mouse = null; });
+    let trail: any[] = [];
+
+    let shootingStars: any[] = [];
+    function spawnShootingStar() {
+      const fromLeft = Math.random() < 0.5;
+      const y0 = Math.random() * H * 0.6;
+      shootingStars.push({
+        x: fromLeft ? -20 : W + 20,
+        y: y0,
+        vx: fromLeft ? (3 + Math.random() * 2) : -(3 + Math.random() * 2),
+        vy: 1 + Math.random() * 1.2,
+        life: 1,
+      });
+    }
+    let shootInterval: ReturnType<typeof setInterval> | null = null;
+    if (!reduceMotion) {
+      shootInterval = setInterval(() => { if (Math.random() < 0.6) spawnShootingStar(); }, 2200);
+    }
+
+    const CONSTELLATIONS: Record<string, { w: number; h: number; pts: number[][]; edges: number[][] }> = {
+      Orion: { w: 200, h: 200, pts: [[0.6, 0.1], [0.25, 0.15], [0.35, 0.45], [0.48, 0.5], [0.6, 0.55], [0.3, 0.85], [0.68, 0.8]], edges: [[0, 2], [1, 2], [2, 3], [3, 4], [4, 6], [5, 2]] },
+      'Ursa Major': { w: 220, h: 170, pts: [[0, 0.4], [0.05, 0.6], [0.3, 0.65], [0.35, 0.45], [0.55, 0.4], [0.75, 0.3], [0.95, 0.15]], edges: [[0, 1], [1, 2], [2, 3], [3, 0], [3, 4], [4, 5], [5, 6]] },
+      'Ursa Minor': { w: 180, h: 180, pts: [[0.9, 0.05], [0.7, 0.15], [0.55, 0.3], [0.3, 0.4], [0.1, 0.35], [0.05, 0.55], [0.25, 0.6]], edges: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 3]] },
+      Cassiopeia: { w: 200, h: 140, pts: [[0, 0.6], [0.25, 0.2], [0.5, 0.55], [0.75, 0.15], [1, 0.5]], edges: [[0, 1], [1, 2], [2, 3], [3, 4]] },
+      Scorpius: { w: 220, h: 180, pts: [[0, 0.3], [0.1, 0.15], [0.25, 0.35], [0.4, 0.45], [0.55, 0.5], [0.68, 0.45], [0.8, 0.55], [0.9, 0.7], [0.85, 0.85]], edges: [[0, 2], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 7], [7, 8]] },
+      Leo: { w: 200, h: 160, pts: [[0.3, 0.05], [0.45, 0.1], [0.5, 0.25], [0.35, 0.4], [0.65, 0.35], [0.85, 0.45], [0.95, 0.3]], edges: [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 6]] },
+      Cygnus: { w: 180, h: 200, pts: [[0.5, 0.05], [0.5, 0.4], [0.5, 0.9], [0.15, 0.35], [0.85, 0.45]], edges: [[0, 1], [1, 2], [3, 1], [1, 4]] },
+    };
+    const names = Object.keys(CONSTELLATIONS);
+    let queue: string[] = [];
+    function refillQueue() { queue = names.slice().sort(() => Math.random() - 0.5); }
+    refillQueue();
+    let constellations: any[] = [];
+    function buildConstellation() {
+      if (queue.length === 0) refillQueue();
+      const name = queue.pop()!;
+      const def = CONSTELLATIONS[name];
+      const cx = Math.random() * Math.max(1, (W - def.w));
+      const cy = Math.random() * Math.max(1, (H * 0.75 - def.h)) + H * 0.05;
+      const pts = def.pts.map((p) => ({ x: cx + p[0] * def.w, y: cy + p[1] * def.h }));
+      const labelPt = pts[Math.floor(pts.length / 2)];
+      constellations.push({ name, pts, edges: def.edges, label: labelPt, life: 0, state: 'in', hold: 0 });
+    }
+    buildConstellation();
+    let constellationInterval: ReturnType<typeof setInterval> | null = null;
+    if (!reduceMotion) {
+      constellationInterval = setInterval(() => {
+        constellations = constellations.filter((c) => c.state !== 'done');
+        buildConstellation();
+      }, 5500);
+    }
+
+    function drawSpike(x: number, y: number, len: number, alpha: number) {
+      const g1 = ctx.createLinearGradient(x - len, y, x + len, y);
+      g1.addColorStop(0, 'rgba(255,255,255,0)');
+      g1.addColorStop(0.5, 'rgba(255,255,255,' + alpha + ')');
+      g1.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.strokeStyle = g1;
+      ctx.lineWidth = 0.6;
+      ctx.beginPath();
+      ctx.moveTo(x - len, y);
+      ctx.lineTo(x + len, y);
+      ctx.stroke();
+      const g2 = ctx.createLinearGradient(x, y - len, x, y + len);
+      g2.addColorStop(0, 'rgba(255,255,255,0)');
+      g2.addColorStop(0.5, 'rgba(255,255,255,' + alpha + ')');
+      g2.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.strokeStyle = g2;
+      ctx.beginPath();
+      ctx.moveTo(x, y - len);
+      ctx.lineTo(x, y + len);
+      ctx.stroke();
+    }
+
+    let rafId: number;
+    function tick(t: number) {
+      ctx.clearRect(0, 0, W, H);
+
+      for (const n of nebulae) {
+        const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r);
+        g.addColorStop(0, 'rgba(' + n.hue + ',0.06)');
+        g.addColorStop(1, 'rgba(' + n.hue + ',0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(n.x - n.r, n.y - n.r, n.r * 2, n.r * 2);
+      }
+
+      for (const s of stars) {
+        const tw = reduceMotion ? 0.75 : 0.35 + 0.65 * Math.max(0, Math.sin(t * 0.0015 * s.speed + s.phase));
+        if (s.bright) {
+          const g = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.size * 6);
+          g.addColorStop(0, 'rgba(' + s.color + ',' + tw * 0.45 + ')');
+          g.addColorStop(1, 'rgba(' + s.color + ',0)');
+          ctx.fillStyle = g;
+          ctx.fillRect(s.x - s.size * 6, s.y - s.size * 6, s.size * 12, s.size * 12);
+          drawSpike(s.x, s.y, s.size * 7, tw * 0.5);
+        }
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(' + s.color + ',' + tw + ')';
+        ctx.arc(s.x, s.y, s.size, 0, 7);
+        ctx.fill();
+      }
+
+      for (const c of constellations) {
+        if (c.state === 'in') { c.life += 0.018; if (c.life >= 1) { c.life = 1; c.state = 'hold'; } }
+        else if (c.state === 'hold') { c.hold += 0.016; if (c.hold > 3) c.state = 'out'; }
+        else if (c.state === 'out') { c.life -= 0.018; if (c.life <= 0) { c.life = 0; c.state = 'done'; } }
+        const a = c.life * 0.75;
+        ctx.strokeStyle = 'rgba(190,170,255,' + a + ')';
+        ctx.lineWidth = 1;
+        for (const [i, j] of c.edges) {
+          ctx.beginPath();
+          ctx.moveTo(c.pts[i].x, c.pts[i].y);
+          ctx.lineTo(c.pts[j].x, c.pts[j].y);
+          ctx.stroke();
+        }
+        ctx.fillStyle = 'rgba(220,200,255,' + c.life + ')';
+        for (const p of c.pts) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 2.2, 0, 7);
+          ctx.fill();
+        }
+        ctx.font = '11px sans-serif';
+        ctx.fillStyle = 'rgba(200,190,230,' + c.life * 0.6 + ')';
+        ctx.fillText(c.name, c.label.x + 8, c.label.y - 8);
+      }
+
+      shootingStars.forEach((s) => {
+        s.x += s.vx * 4;
+        s.y += s.vy * 4;
+        s.life -= 0.012;
+        ctx.strokeStyle = 'rgba(255,255,255,' + Math.max(s.life, 0) + ')';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(s.x - s.vx * 14, s.y - s.vy * 14);
+        ctx.stroke();
+      });
+      shootingStars = shootingStars.filter((s) => s.life > 0 && s.x > -40 && s.x < W + 40);
+
+      if (mouse) trail.push({ x: mouse.x, y: mouse.y, life: 1 });
+      trail.forEach((p) => (p.life -= 0.03));
+      trail = trail.filter((p) => p.life > 0);
+      for (const p of trail) {
+        ctx.beginPath();
+        ctx.fillStyle = 'rgba(180,210,255,' + p.life * 0.8 + ')';
+        ctx.arc(p.x, p.y, p.life * 4, 0, 7);
+        ctx.fill();
+      }
+
+      if (grainCanvas) {
+        const pat = ctx.createPattern(grainCanvas, 'repeat');
+        if (pat) {
+          ctx.fillStyle = pat;
+          ctx.fillRect(0, 0, W, H);
+        }
+      }
+
+      const vg = ctx.createRadialGradient(W / 2, H / 2, H * 0.2, W / 2, H / 2, H * 0.9);
+      vg.addColorStop(0, 'rgba(0,0,0,0)');
+      vg.addColorStop(1, 'rgba(0,0,0,0.35)');
+      ctx.fillStyle = vg;
+      ctx.fillRect(0, 0, W, H);
+
+      if (!reduceMotion) {
+        rafId = requestAnimationFrame(tick);
+      }
+    }
+
+    if (reduceMotion) {
+      // Draw a single static frame — no rAF loop, no shooting stars/constellation cycling.
+      tick(0);
+    } else {
+      rafId = requestAnimationFrame(tick);
+    }
+  })();
+</script>

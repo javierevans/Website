@@ -51,9 +51,9 @@ p {
   --muted: #8b96b3; /* Blue-grey muted text */
   --border: #232f49; /* Hairline border */
 
-  --accent: #fb5a78; /* Rose accent (from the original brand pink) */
-  --accent-hover: #ff7d96;
-  --accent-soft: rgba(251, 90, 120, 0.14);
+  --accent: #beaaff; /* Lavender — primary accent (night-sky palette) */
+  --accent-hover: #8fb8ff; /* Blue — secondary accent, used on hover/focus */
+  --accent-soft: rgba(190, 170, 255, 0.14);
 
   --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", Menlo,
     Consolas, monospace;
@@ -478,6 +478,12 @@ section h2::after {
 /* Every direct child inside #welcome can grow up to 1100px wide — but no wider */
 #welcome > * {
   max-width: 1100px;
+}
+
+/* The starfield needs to cover #welcome's full width, not the 1100px cap above
+   (ID selector beats this class regardless of source order, hence the override) */
+#welcome > .starfield-wrap {
+  max-width: none;
 }
 
 /* Large hero title */
