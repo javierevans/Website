@@ -210,6 +210,7 @@ nav .logo a {
   font-weight: 700;
   font-size: 1rem;
   color: var(--text);
+  white-space: nowrap; /* Never let "Javier Evans" wrap onto a second line, down to ~320px */
 }
 
 nav .logo .logo-mark {
@@ -317,6 +318,119 @@ nav ul {
 .nav-icon-btn:focus-visible .nav-tooltip {
   opacity: 1;
   transform: translate(-50%, 0);
+}
+
+/* ===== Mobile nav (hamburger + slide-down menu) ===== */
+/* Hidden by default (desktop); the media query below swaps it in for
+   .nav-center/.nav-actions under 768px instead of trying to squeeze the
+   full icon row into a narrow bar. */
+.nav-hamburger {
+  display: none;
+  grid-column: 3; /* Takes over nav-actions's track once nav-actions is hidden */
+  justify-self: end;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.hamburger-line {
+  display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--text);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-hamburger[aria-expanded="true"] .hamburger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-hamburger[aria-expanded="true"] .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-hamburger[aria-expanded="true"] .hamburger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.mobile-menu {
+  display: none; /* Overridden to block by the <768px media query */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 14px 34px -18px rgba(0, 0, 0, 0.6);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  z-index: 999; /* Just under the sticky header's 1000 */
+}
+
+.mobile-menu.is-open {
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+
+.mobile-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 8px 6% 16px;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  gap: 6px;
+}
+
+/* Overrides the circular 38x38 desktop icon button for a full-width, labeled row */
+.mobile-menu .nav-icon-btn.mobile-menu-link {
+  width: 100%;
+  height: auto;
+  min-height: 44px;
+  border-radius: 10px;
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 0 14px;
+}
+
+.mobile-menu-label {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+}
+
+/* No hover-only tooltips on a touch menu — the label is already visible */
+.mobile-menu .nav-tooltip {
+  display: none;
+}
+
+body.mobile-menu-open {
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .nav-center,
+  .nav-actions {
+    display: none;
+  }
+
+  .nav-hamburger {
+    display: inline-flex;
+  }
+
+  .mobile-menu {
+    display: block;
+  }
 }
 
 /* ===== GitHub Button (optional) ===== */
@@ -1640,6 +1754,19 @@ a.contact-chip:hover {
   transition:
     background-color 0.2s ease,
     transform 0.2s ease;
+}
+
+/* Nudge the form's touch targets up toward the ~44px minimum on mobile —
+   desktop keeps the tighter terminal-style padding since it's mouse-driven. */
+@media (max-width: 768px) {
+  #contact input,
+  #contact textarea {
+    padding: 12px 2px;
+  }
+
+  #contact button {
+    padding: 12px 22px;
+  }
 }
 
 /* Hover effect for the submit button */
