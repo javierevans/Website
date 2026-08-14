@@ -618,49 +618,6 @@ section h2::after {
   margin-top: 28px;
 }
 
-/* Scroll cue — fills the empty space below the buttons and doubles as a
-   functional jump to About, rather than a purely decorative filler */
-.scroll-cue {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 56px;
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: color 0.15s;
-}
-
-.scroll-cue:hover {
-  color: var(--accent);
-}
-
-.scroll-cue-arrow {
-  display: inline-block;
-  animation: scroll-cue-bounce 1.8s ease-in-out infinite;
-}
-
-@keyframes scroll-cue-bounce {
-  0%,
-  100% {
-    transform: translateY(0);
-    opacity: 0.5;
-  }
-  50% {
-    transform: translateY(6px);
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scroll-cue-arrow {
-    animation: none;
-  }
-}
-
 /* RIGHT SIDE */
 .hero-image {
   flex: 1;
