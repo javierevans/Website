@@ -3,7 +3,14 @@
 import Header from "../components/Header.astro"
 import Footer from '../components/footer.astro';
 import"../styles/global.css";
-const { title } = Astro.props;
+const {
+	title,
+	description = "CS student at TCNJ building practical, secure software. Full-stack development, cybersecurity, and more.",
+	ogTitle = "Javier Evans — Software Developer",
+	ogImage = "https://www.javierevans.dev/images/og-preview.png",
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, "https://www.javierevans.dev/");
 
 ---
 
@@ -20,6 +27,21 @@ const { title } = Astro.props;
 
 		<meta name="generator" content={Astro.generator} />
 		<title>{Astro.props.title || "My Website"}</title>
+
+		<meta name="description" content={description} />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalURL} />
+		<meta property="og:title" content={ogTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={ogTitle} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
 	</head>
 	<body>
 		<Header />
