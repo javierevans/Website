@@ -34,7 +34,7 @@ const chips = [
 
     <div class="contact-columns">
 
-      <div class="contact-info-block" data-reveal>
+      <div class="contact-chips-block" data-reveal>
         <div class="contact-chips">
           {chips.map((chip) => {
             const Tag = chip.href ? "a" : "div";
@@ -50,22 +50,6 @@ const chips = [
               </Tag>
             );
           })}
-        </div>
-
-        <span class="kicker">connect</span>
-        <div class="contact-socials">
-          {socials.map((social) => (
-            <a
-              href={social.href}
-              target="_blank"
-              rel="noopener"
-              class="nav-icon-btn"
-              aria-label={social.label}
-            >
-              <span class="nav-icon" set:html={social.icon} />
-              <span class="nav-tooltip">{social.label}</span>
-            </a>
-          ))}
         </div>
       </div>
 
@@ -100,6 +84,24 @@ const chips = [
           <!-- Status message goes here -->
           <p id="form-status" role="status" aria-live="polite"></p>
         </form>
+      </div>
+
+      <div class="contact-connect-block" data-reveal>
+        <span class="kicker">connect</span>
+        <div class="contact-socials">
+          {socials.map((social) => (
+            <a
+              href={social.href}
+              target="_blank"
+              rel="noopener"
+              class="nav-icon-btn"
+              aria-label={social.label}
+            >
+              <span class="nav-icon" set:html={social.icon} />
+              <span class="nav-tooltip">{social.label}</span>
+            </a>
+          ))}
+        </div>
       </div>
 
     </div>

@@ -1523,9 +1523,18 @@ section h2::after {
 
 /* Info cards on the left, form on the right */
 .contact-columns {
-  display: flex;
-  align-items: flex-start;
-  gap: clamp(28px, 4vw, 48px);
+  display: grid;
+  grid-template-columns: 285px 1fr;
+  /* min-content caps row 1 at the chips' own height — without it, the
+     code-panel spanning both rows forces the grid to inflate row 1 too,
+     shoving "connect" down with a big gap instead of sitting right under it. */
+  grid-template-rows: min-content 1fr;
+  grid-template-areas:
+    "chips form"
+    "connect form";
+  align-items: start;
+  column-gap: clamp(28px, 4vw, 48px);
+  row-gap: 14px;
   width: 100%;
 }
 
@@ -1558,13 +1567,17 @@ section h2::after {
   text-align: center;
 }
 
-/* Left column: info cards + socials */
-.contact-info-block {
-  flex: 0 0 285px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
+/* Left column: info cards */
+.contact-chips-block {
+  grid-area: chips;
+  width: 100%;
+  text-align: left;
+}
+
+/* Below the info cards on desktop; moves below the form on mobile (see media query) */
+.contact-connect-block {
+  grid-area: connect;
+  width: 100%;
   text-align: left;
 }
 
@@ -1639,8 +1652,8 @@ a.contact-chip:hover {
 
 /* Form panel styled like a code editor window */
 .code-panel {
-  flex: 1 1 auto;
-  min-width: 0; /* lets the panel shrink instead of overflowing the row */
+  grid-area: form;
+  min-width: 0; /* lets the panel shrink instead of overflowing its column */
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -1838,14 +1851,14 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* ========== Mobile: stack the info column above the form ========== */
+/* ========== Mobile: chips, then the (full-width) form, then connect ===== */
 @media (max-width: 760px) {
   .contact-columns {
-    flex-direction: column;
-  }
-
-  .contact-info-block {
-    flex-basis: auto;
-    width: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    grid-template-areas:
+      "chips"
+      "form"
+      "connect";
   }
 }
